@@ -1,0 +1,11 @@
+D:\git\QICore\QICore.NIdentityServer4\bin\Debug\netcoreapp2.0\QICore.NIdentityServer4.deps.json
+D:\git\QICore\QICore.NIdentityServer4\bin\Debug\netcoreapp2.0\QICore.NIdentityServer4.runtimeconfig.json
+D:\git\QICore\QICore.NIdentityServer4\bin\Debug\netcoreapp2.0\QICore.NIdentityServer4.runtimeconfig.dev.json
+D:\git\QICore\QICore.NIdentityServer4\bin\Debug\netcoreapp2.0\QICore.NIdentityServer4.dll
+D:\git\QICore\QICore.NIdentityServer4\bin\Debug\netcoreapp2.0\QICore.NIdentityServer4.pdb
+D:\git\QICore\QICore.NIdentityServer4\obj\Debug\netcoreapp2.0\QICore.NIdentityServer4.csprojResolveAssemblyReference.cache
+D:\git\QICore\QICore.NIdentityServer4\obj\Debug\netcoreapp2.0\QICore.NIdentityServer4.csproj.CoreCompileInputs.cache
+D:\git\QICore\QICore.NIdentityServer4\obj\Debug\netcoreapp2.0\QICore.NIdentityServer4.AssemblyInfoInputs.cache
+D:\git\QICore\QICore.NIdentityServer4\obj\Debug\netcoreapp2.0\QICore.NIdentityServer4.AssemblyInfo.cs
+D:\git\QICore\QICore.NIdentityServer4\obj\Debug\netcoreapp2.0\QICore.NIdentityServer4.dll
+D:\git\QICore\QICore.NIdentityServer4\obj\Debug\netcoreapp2.0\QICore.NIdentityServer4.pdb

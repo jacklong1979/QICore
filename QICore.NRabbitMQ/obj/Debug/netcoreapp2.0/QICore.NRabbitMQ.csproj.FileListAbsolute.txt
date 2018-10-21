@@ -1,0 +1,11 @@
+D:\git\QICore\QICore.NRabbitMQ\bin\Debug\netcoreapp2.0\QICore.NRabbitMQ.deps.json
+D:\git\QICore\QICore.NRabbitMQ\bin\Debug\netcoreapp2.0\QICore.NRabbitMQ.runtimeconfig.json
+D:\git\QICore\QICore.NRabbitMQ\bin\Debug\netcoreapp2.0\QICore.NRabbitMQ.runtimeconfig.dev.json
+D:\git\QICore\QICore.NRabbitMQ\bin\Debug\netcoreapp2.0\QICore.NRabbitMQ.dll
+D:\git\QICore\QICore.NRabbitMQ\obj\Debug\netcoreapp2.0\QICore.NRabbitMQ.csprojResolveAssemblyReference.cache
+D:\git\QICore\QICore.NRabbitMQ\obj\Debug\netcoreapp2.0\QICore.NRabbitMQ.csproj.CoreCompileInputs.cache
+D:\git\QICore\QICore.NRabbitMQ\obj\Debug\netcoreapp2.0\QICore.NRabbitMQ.AssemblyInfoInputs.cache
+D:\git\QICore\QICore.NRabbitMQ\obj\Debug\netcoreapp2.0\QICore.NRabbitMQ.AssemblyInfo.cs
+D:\git\QICore\QICore.NRabbitMQ\bin\Debug\netcoreapp2.0\QICore.NRabbitMQ.pdb
+D:\git\QICore\QICore.NRabbitMQ\obj\Debug\netcoreapp2.0\QICore.NRabbitMQ.dll
+D:\git\QICore\QICore.NRabbitMQ\obj\Debug\netcoreapp2.0\QICore.NRabbitMQ.pdb
