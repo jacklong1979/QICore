@@ -3,7 +3,6 @@ D:\git\QICore\QICore.NQuartz\bin\Debug\netcoreapp2.0\QICore.NQuartz.runtimeconfi
 D:\git\QICore\QICore.NQuartz\bin\Debug\netcoreapp2.0\QICore.NQuartz.runtimeconfig.dev.json
 D:\git\QICore\QICore.NQuartz\bin\Debug\netcoreapp2.0\QICore.NQuartz.dll
 D:\git\QICore\QICore.NQuartz\bin\Debug\netcoreapp2.0\QICore.NQuartz.pdb
-D:\git\QICore\QICore.NQuartz\obj\Debug\netcoreapp2.0\QICore.NQuartz.csprojResolveAssemblyReference.cache
 D:\git\QICore\QICore.NQuartz\obj\Debug\netcoreapp2.0\QICore.NQuartz.csproj.CoreCompileInputs.cache
 D:\git\QICore\QICore.NQuartz\obj\Debug\netcoreapp2.0\QICore.NQuartz.AssemblyInfoInputs.cache
 D:\git\QICore\QICore.NQuartz\obj\Debug\netcoreapp2.0\QICore.NQuartz.AssemblyInfo.cs

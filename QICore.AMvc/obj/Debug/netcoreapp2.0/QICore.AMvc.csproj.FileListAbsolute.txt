@@ -8,3 +8,4 @@ D:\git\QICore\QICore.AMvc\obj\Debug\netcoreapp2.0\QICore.AMvc.AssemblyInfoInputs
 D:\git\QICore\QICore.AMvc\obj\Debug\netcoreapp2.0\QICore.AMvc.AssemblyInfo.cs
 D:\git\QICore\QICore.AMvc\obj\Debug\netcoreapp2.0\QICore.AMvc.dll
 D:\git\QICore\QICore.AMvc\obj\Debug\netcoreapp2.0\QICore.AMvc.pdb
+D:\git\QICore\QICore.AMvc\obj\Debug\netcoreapp2.0\QICore.AMvc.csprojResolveAssemblyReference.cache

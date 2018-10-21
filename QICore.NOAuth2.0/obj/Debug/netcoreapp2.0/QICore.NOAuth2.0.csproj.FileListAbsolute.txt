@@ -8,4 +8,3 @@ D:\git\QICore\QICore.NOAuth2.0\obj\Debug\netcoreapp2.0\QICore.NOAuth2.0.Assembly
 D:\git\QICore\QICore.NOAuth2.0\obj\Debug\netcoreapp2.0\QICore.NOAuth2.0.AssemblyInfo.cs
 D:\git\QICore\QICore.NOAuth2.0\obj\Debug\netcoreapp2.0\QICore.NOAuth2.0.dll
 D:\git\QICore\QICore.NOAuth2.0\obj\Debug\netcoreapp2.0\QICore.NOAuth2.0.pdb
-D:\git\QICore\QICore.NOAuth2.0\obj\Debug\netcoreapp2.0\QICore.NOAuth2.0.csprojResolveAssemblyReference.cache
