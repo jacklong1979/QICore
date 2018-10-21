@@ -1,8 +1,0 @@
-D:\git\QICore\QICore.Modes\bin\Debug\netcoreapp2.0\QICore.Modes.deps.json
-D:\git\QICore\QICore.Modes\bin\Debug\netcoreapp2.0\QICore.Modes.dll
-D:\git\QICore\QICore.Modes\bin\Debug\netcoreapp2.0\QICore.Modes.pdb
-D:\git\QICore\QICore.Modes\obj\Debug\netcoreapp2.0\QICore.Modes.csproj.CoreCompileInputs.cache
-D:\git\QICore\QICore.Modes\obj\Debug\netcoreapp2.0\QICore.Modes.AssemblyInfoInputs.cache
-D:\git\QICore\QICore.Modes\obj\Debug\netcoreapp2.0\QICore.Modes.AssemblyInfo.cs
-D:\git\QICore\QICore.Modes\obj\Debug\netcoreapp2.0\QICore.Modes.dll
-D:\git\QICore\QICore.Modes\obj\Debug\netcoreapp2.0\QICore.Modes.pdb

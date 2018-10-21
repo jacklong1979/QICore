@@ -1,8 +1,0 @@
-D:\git\QICore\QICore.NCommon\bin\Debug\netcoreapp2.0\QICore.NCommon.deps.json
-D:\git\QICore\QICore.NCommon\bin\Debug\netcoreapp2.0\QICore.NCommon.dll
-D:\git\QICore\QICore.NCommon\bin\Debug\netcoreapp2.0\QICore.NCommon.pdb
-D:\git\QICore\QICore.NCommon\obj\Debug\netcoreapp2.0\QICore.NCommon.csproj.CoreCompileInputs.cache
-D:\git\QICore\QICore.NCommon\obj\Debug\netcoreapp2.0\QICore.NCommon.AssemblyInfoInputs.cache
-D:\git\QICore\QICore.NCommon\obj\Debug\netcoreapp2.0\QICore.NCommon.AssemblyInfo.cs
-D:\git\QICore\QICore.NCommon\obj\Debug\netcoreapp2.0\QICore.NCommon.dll
-D:\git\QICore\QICore.NCommon\obj\Debug\netcoreapp2.0\QICore.NCommon.pdb
