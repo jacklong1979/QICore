@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NLog;
+using QICore.NQuartz.Dao;
 
 namespace QICore.NQuartz.Controllers
 {
@@ -21,6 +22,7 @@ namespace QICore.NQuartz.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            QuartzCommon.StartAsync().GetAwaiter().GetResult();
             //Trace -》Debug-》 Information -》Warning-》 Error-》 Critical
             _logger.LogTrace("Trace");
             _logger.LogDebug("Debug");

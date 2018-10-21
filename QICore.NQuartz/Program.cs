@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using QICore.NQuartz.Dao;
 
 namespace QICore.NQuartz
 {
@@ -14,7 +15,9 @@ namespace QICore.NQuartz
     {
         public static void Main(string[] args)
         {
+           // QuartzCommon.StartAsync().GetAwaiter().GetResult();
             BuildWebHost(args).Run();
+           
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
