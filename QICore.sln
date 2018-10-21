@@ -3,25 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NQuartz", "QICore.NQuartz\QICore.NQuartz.csproj", "{77F2D044-F2CC-49D2-A913-60C0C5090F2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NSignalR", "QICore.NSignalR\QICore.NSignalR.csproj", "{97990124-1B9C-4332-822D-412975684349}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NSignalR", "QICore.NSignalR\QICore.NSignalR.csproj", "{97990124-1B9C-4332-822D-412975684349}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NRedis", "QICore.NRedis\QICore.NRedis.csproj", "{6454BAAA-23EC-4CAC-940D-D31BC6CEC971}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NRedis", "QICore.NRedis\QICore.NRedis.csproj", "{6454BAAA-23EC-4CAC-940D-D31BC6CEC971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NCommon", "QICore.NCommon\QICore.NCommon.csproj", "{DA6B4C03-5311-4104-A054-5B5E9DCB34B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NCommon", "QICore.NCommon\QICore.NCommon.csproj", "{DA6B4C03-5311-4104-A054-5B5E9DCB34B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NOAuth2.0", "QICore.NOAuth2.0\QICore.NOAuth2.0.csproj", "{C53329DE-E929-4C6C-95F3-1FD374243378}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NOAuth2.0", "QICore.NOAuth2.0\QICore.NOAuth2.0.csproj", "{C53329DE-E929-4C6C-95F3-1FD374243378}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NIdentityServer4", "QICore.NIdentityServer4\QICore.NIdentityServer4.csproj", "{0B8AFCA5-3BF4-47D4-93B5-7117D21F45AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NIdentityServer4", "QICore.NIdentityServer4\QICore.NIdentityServer4.csproj", "{0B8AFCA5-3BF4-47D4-93B5-7117D21F45AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.Modes", "QICore.Modes\QICore.Modes.csproj", "{4099E72C-3257-4F40-ADBA-68F24301CABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.Modes", "QICore.Modes\QICore.Modes.csproj", "{4099E72C-3257-4F40-ADBA-68F24301CABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.AMvc", "QICore.AMvc\QICore.AMvc.csproj", "{9A7F7B8E-DBC1-43C9-8E28-85B7FA61EA21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.AMvc", "QICore.AMvc\QICore.AMvc.csproj", "{9A7F7B8E-DBC1-43C9-8E28-85B7FA61EA21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NRabbitMQ", "QICore.NRabbitMQ\QICore.NRabbitMQ.csproj", "{B92199F3-201B-4D0A-BD2D-B944D3D40FBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NRabbitMQ", "QICore.NRabbitMQ\QICore.NRabbitMQ.csproj", "{B92199F3-201B-4D0A-BD2D-B944D3D40FBA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NDapper", "QICore.NDapper\QICore.NDapper.csproj", "{A802D35D-A427-4868-858A-53BC990FD012}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NDapper", "QICore.NDapper\QICore.NDapper.csproj", "{A802D35D-A427-4868-858A-53BC990FD012}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{77F2D044-F2CC-49D2-A913-60C0C5090F2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77F2D044-F2CC-49D2-A913-60C0C5090F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77F2D044-F2CC-49D2-A913-60C0C5090F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77F2D044-F2CC-49D2-A913-60C0C5090F2E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{97990124-1B9C-4332-822D-412975684349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{97990124-1B9C-4332-822D-412975684349}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97990124-1B9C-4332-822D-412975684349}.Release|Any CPU.ActiveCfg = Release|Any CPU
