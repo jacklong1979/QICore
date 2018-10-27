@@ -1,0 +1,100 @@
+﻿日志级别：Trace -》Debug-》 Information -》Warning-》 Error-》 Critical
+级别包含范围由大到小 ，如 Trace 就包含了所有信息。
+---------------------------------------------------------------------------------------------------------
+二 配置文件
+支持多种配置形式：
+1直接在使用应用程序配置文件或者web的配置文件（app.config / web.config）
+2可以设置后缀为.nlog的配置文件,这个就保存在程序目录下,如果是web项目里跟web.config同级目录(程序名.exe.nlog / web.nlog)
+3 NLog.config 这个是比较好的一个形式,也比较推荐使用的,网上绝大部分都是用这个形式的.就在程序目录下.
+4 使用NLog.dll.nlog ,这个和NLog.dll在同一级目录内
+我这里在app.config里配置数据库加密串,NLog.config在安装时自动生成 ,比其他的配置简单
+配置targets和rules：
+<targets /> - 定义日志的目标/输出,下级是<target>
+<rules /> - 定义日志的路由规则,下级是<logger>
+三 标签解读
+---------------------------------------------------------------------------------------------------------
+<nlog>标签
+autoReload 修改配置文件后是否允许自动加载无须重启程序
+throwExceptions 内部日志系统抛出异常
+internalLogLevel 可选Trace|Debug|Info|Warn|Error|Fatal决定内部日志的级别 Off 关闭
+internalLogFile 把内部的调试和异常信息都写入指定文件里
+建议throwExceptions的值设为“false”，这样由于日志引发的问题不至于导致应用程序的崩溃。
+<targets>标签
+<target />区域定义了日志的目标或者说输出 ，,在这里可以按需设置文件名称和格式，输出方式。
+name：自定义该target的名字,可供rule规则里使用
+type： 定义类型,官方提供的可选类型有:
+Chainsaw|ColoredConsole |Console |Database|Debug|Debugger|EventLog|File|LogReceiverService|Mail|Memory|MethodCall|Network |NLogViewer|Null |OutputDebugString|PerfCounter|Trace|WebService
+不过常用的还是 File \Database \Colored Console\ Mail
+layouts 用来规定布局样式,语法“${属性}”,可以把上下文信息插入到日志中，官方提供的可以用的属性见文末附录
+---------------------------------------------------------------------------------------------------------
+<rules>标签
+
+各种规则配置在logger里
+name - 记录者的名字
+minlevel - 最低级别
+maxlevel - 最高级别
+level - 单一日志级别
+levels - 一系列日志级别，由逗号分隔。
+writeTo - 规则匹配时日志应该被写入的一系列目标，由逗号分隔。
+---------------------------------------------------------------------------------------------------------
+<variable>标签
+变量定义
+ <variable name="variable1" value="${basedir}/logs"/> 
+ <targets>   
+    <target name="File" xsi:type="File" fileName="${variable1}/${shortdate}.txt"/>  
+
+--------------------------------------------------------------------------------------------------------- 
+
+附录：layouts 属性
+
+${activityid}	将其置入日志System.Diagnostics trace 
+${all-event-properties}	事件日志上下文
+${appdomain}	当前应用程序域
+${assembly-version}	应用程序
+${basedir}	应用程序域的基本目录。
+${callsite}	(类名称、方法名称和相关信息的源信息)。
+${callsite-linenumber}	调用类的
+${counter}	数值
+${date}	当前日期和时间。
+${document-uri}	用于Silverlight应用。
+${environment}	环境变量
+${event-properties}	 
+${exception}	exception信息
+${file-contents}	显示指定文件的内容
+${gc}	垃圾收集器
+${gdc}	诊断上下文
+${guid}	GUID
+${identity}	线程标识信息
+${install-context}	安装参数
+${level}	级别。
+${literal}	 
+${log4jxmlevent}	XML事件描述
+${logger}	记录器的名字
+${longdate}	日期和时间的格式分类yyyy-MM-dd HH:mm:ss.ffff。
+${machinename}	名称
+${mdc} 	映射诊断
+${mdlc}	异步映射诊断上下文
+${message}	消息
+${ndc}	线程结构
+${ndlc}	异步线程
+${newline}	文字换行
+${nlogdir}	nlog.dll目录。
+${performancecounter}	述性能计数器。
+${processid}	当前进程标识符
+${processinfo}	运行信息
+${processname}	当前进程的名称。
+${processtime}	该时间过程中格式HH:MM:ss.mmm。
+${qpc}	高精度定时器，基于返回的值从queryperformancecounter(任选地)转换为秒。
+${registry}	从注册表中的值。
+${sequenceid}	ID
+${shortdate}	短时间 格式YYYY-MM-DD。
+${sl-appinfo}	Silverlight应用。
+${specialfolder}	文件夹路径
+${stacktrace} -	堆栈跟踪渲染器。
+${tempdir}	临时目录中。
+${threadid}	当前线程的标识符。
+${threadname}	当前线程。
+${ticks}	当前日期和时间。
+${time}	24小时格式HH:MM:ss.mmm。
+${var}	{$var}-提供新的变量(4.1)
+${windows-identity}	indows线程标识信息(用户名)
