@@ -23,3 +23,5 @@ obj
 bin
 bin
 obj
+/QICore.NetSocketClient/Properties
+/QICore.NetSocketServer/Properties
