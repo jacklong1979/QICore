@@ -16,7 +16,7 @@ namespace QICore.NetSocketServer
         public static void Main(string[] args)
         {
             //启动服务器
-
+            Console.Title = "通信服务端Server";//设置窗口标题
             TcpServer.StartServer("127.0.0.1", 3400);
             TcpServer.Listen(); //开始聆听
             BuildWebHost(args).Run();

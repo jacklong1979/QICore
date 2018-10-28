@@ -39,17 +39,20 @@ namespace QICore.NetSocketServer.Common
                     var clientTask =_Listener.AcceptTcpClientAsync(); // 获取客户端
                     if (clientTask.Result != null)
                     {
-                      
-                        Console.WriteLine("客户端已连接，等待数据中....Client connected. Waiting for data.");
+                        var endPoint = (System.Net.IPEndPoint)clientTask.Result.Client.RemoteEndPoint;//获取远程连接IP
+                        var clientIP = endPoint.Address;//客户端连的地址
+                        var port = endPoint.Port;//客户端连的端口
+
+                        Console.WriteLine($"客户端已连接》{clientIP}:{port}");
                         var client = clientTask.Result;//接收到客户端的数据
                         string message = "";
-                        while (!string.IsNullOrEmpty(message) && !message.StartsWith("quit"))
+                        while (message!=null && !message.StartsWith("quit"))
                         {
                             #region 接收到客户端的消息
-                            byte[] buffer = new byte[1024];
+                            byte[] buffer = new byte[256];
                             client.GetStream().Read(buffer, 0, buffer.Length);//接收信息
                             message = Encoding.UTF8.GetString(buffer);
-                            Console.WriteLine("来自客户端消息：" + message);
+                            Console.WriteLine("来自客户端消息：" + message.TrimEnd('\0'));
                             #endregion
                             #region 发送消息到客户端
                             if (!string.IsNullOrEmpty(message))

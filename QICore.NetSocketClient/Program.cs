@@ -17,7 +17,7 @@ namespace QICore.NetSocketClient
     {
         public static void Main(string[] args)
         {
-
+            Console.Title = "通信客户端Client";//设置窗口标题
             var host = "127.0.0.1";
             var port = 3400;
 

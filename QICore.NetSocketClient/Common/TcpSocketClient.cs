@@ -53,7 +53,7 @@ namespace QICore.NetSocketClient.Common
                     }
                     //var receiveBuffer = new byte[len];
                     string str = System.Text.Encoding.Default.GetString(receiveBuffer.ToArray());
-                    Console.WriteLine($"收到服务端的消息: {str}");
+                    Console.WriteLine($"收到服务端的消息: {str.TrimEnd('\0')}");
                     // Statistics.IncrementReceivedTimes();
 
                     await Task.Delay(2 * 1000);
