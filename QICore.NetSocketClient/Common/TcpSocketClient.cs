@@ -10,7 +10,8 @@ namespace QICore.NetSocketClient.Common
 {
     public class TcpSocketClient
     {
-       
+
+        private static NetworkStream workStream = null;
         public static async Task StartClientAsync(string host, int port)
         {
             var client = new TcpClient();
@@ -30,38 +31,67 @@ namespace QICore.NetSocketClient.Common
             }
         }
 
-        private static async Task RunClientAsync(TcpClient client)
+        private static async Task RunClientAsync(TcpClient tcpClient)
         {
-            var receiveBufferBytes = new byte[1024];
+            var buffer = new byte[1024];
 
-            var sendBytes = Encoding.UTF8.GetBytes("中国人民");
+            var data = Encoding.UTF8.GetBytes("中国人民");
             while (true)
             {
                 try
                 {
-                    var sendBuffer = new ArraySegment<byte>(sendBytes, 0, sendBytes.Length);
-                    await client.Client.SendAsync(sendBuffer, SocketFlags.None);//发送消息给服务端
-                   // Statistics.IncrementSendTimes();
-
-                    var receiveBuffer = new ArraySegment<byte>(receiveBufferBytes);
-                    var len = await client.Client.ReceiveAsync(receiveBuffer, SocketFlags.None);//接收到服务端的消息
-                    if (len == 0)
+                    var endPoint = (System.Net.IPEndPoint)tcpClient.Client.RemoteEndPoint;//获取远程连接IP
+                    var clientIP = endPoint.Address;//客户端连的地址
+                    var port = endPoint.Port;//客户端连的端口
+                    workStream = tcpClient.GetStream();
+                    if (workStream == null)
                     {
-                        client.Dispose();
-                       // Statistics.DecrementClient();
-                        break;
+                        Console.WriteLine($"接收到服务端数据为 null》{clientIP}:{port}");
+                        workStream.Close();
+                        workStream.Dispose();
+                        Console.WriteLine("关闭连接");
                     }
-                    //var receiveBuffer = new byte[len];
-                    string str = System.Text.Encoding.Default.GetString(receiveBuffer.ToArray());
-                    Console.WriteLine($"收到服务端的消息: {str.TrimEnd('\0')}");
-                    // Statistics.IncrementReceivedTimes();
+                    else
+                    {
+                        while (true)
+                        {
+                            #region 发送消息                       
+                            await workStream.WriteAsync(data, 0, data.Length);//发送信息     
+                            Console.WriteLine("已把数据发送到服务端");
+                            #endregion
+                            #region 接收到客户端的消息                       
+                            await workStream.ReadAsync(buffer, 0, buffer.Length);//接收信息
+                            var message = Encoding.UTF8.GetString(buffer);
+                            Console.WriteLine("来自服务端消息：" + message.TrimEnd('\0'));
+                            #endregion
+                            await Task.Delay(2 * 1000);
+                        }
+                    }
+                    // var sendBuffer = new ArraySegment<byte>(sendBytes, 0, sendBytes.Length);
+                    // await tcpClient.Client.SendAsync(sendBuffer, SocketFlags.None);//发送消息给服务端
+                    //// Statistics.IncrementSendTimes();
+
+                    // var receiveBuffer = new ArraySegment<byte>(buffer);
+                    // var len = await tcpClient.Client.ReceiveAsync(receiveBuffer, SocketFlags.None);//接收到服务端的消息
+                    // if (len == 0)
+                    // {
+                    //     Console.WriteLine($"收到服务端的消息 null:");
+                    //     tcpClient.Dispose();
+                    //    // Statistics.DecrementClient();
+                    //     break;
+                    // }
+                    // //var receiveBuffer = new byte[len];
+                    // string str = System.Text.Encoding.Default.GetString(receiveBuffer.ToArray());
+                    // Console.WriteLine($"收到服务端的消息: {str.TrimEnd('\0')}");
+                    // // Statistics.IncrementReceivedTimes();
 
                     await Task.Delay(2 * 1000);
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine($"发生异常: {ex.ToString()}");
                     //Console.WriteLine($"RunClientAsync Error: {ex}");
-                    client.Dispose();
+                    tcpClient.Dispose();
                    // Statistics.DecrementClient();
                     break;
                 }

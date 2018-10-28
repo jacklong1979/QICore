@@ -13,6 +13,12 @@ namespace QICore.NetSocketServer.Common
     {
 
         static readonly StatisticsInfo Statistics = new StatisticsInfo();
+
+        private static TcpClient tcpServer = null;
+        private static TcpClient tcpClient = null;
+        private static NetworkStream workStream = null;
+        public ManualResetEvent connectDone = new ManualResetEvent(false);
+
         private static TcpListener _Listener { get; set; }
 
         private static bool _Accept { get; set; } = false;
@@ -36,15 +42,15 @@ namespace QICore.NetSocketServer.Common
                 while (true)
                 {
                     Console.WriteLine("等待客户端：Waiting for client...");
-                    var clientTask =_Listener.AcceptTcpClientAsync(); // 获取客户端
-                    if (clientTask.Result != null)
+                    var tcpClient =_Listener.AcceptTcpClientAsync(); // 获取客户端
+                    if (tcpClient.Result != null)
                     {
-                        var endPoint = (System.Net.IPEndPoint)clientTask.Result.Client.RemoteEndPoint;//获取远程连接IP
+                        var endPoint = (System.Net.IPEndPoint)tcpClient.Result.Client.RemoteEndPoint;//获取远程连接IP
                         var clientIP = endPoint.Address;//客户端连的地址
                         var port = endPoint.Port;//客户端连的端口
 
                         Console.WriteLine($"客户端已连接》{clientIP}:{port}");
-                        var client = clientTask.Result;//接收到客户端的数据
+                        var client = tcpClient.Result;//接收到客户端的数据
                         string message = "";
                         while (message!=null && !message.StartsWith("quit"))
                         {
@@ -62,7 +68,7 @@ namespace QICore.NetSocketServer.Common
                             }
                             #endregion
 
-                            // clientTask.GetAwaiter().GetResult().Client.Send(serverData, SocketFlags.None);//把消息发送回给客户端
+                            // tcpClient.GetAwaiter().GetResult().Client.Send(serverData, SocketFlags.None);//把消息发送回给客户端
                         }
                         Console.WriteLine("关闭连接");
                         client.GetStream().Dispose();
@@ -78,24 +84,53 @@ namespace QICore.NetSocketServer.Common
             if (_Listener != null && _Accept)
             {
                 byte[] buffer = new byte[1024];
-                var buf = new ArraySegment<byte>(buffer);
+                //var buffer = new ArraySegment<byte>(buffer);
                 //监听 Continue listening.
                 while (true)
                 {
                     Console.WriteLine("等待客户端：Waiting for client...");
-                    var clientTask =await _Listener.AcceptTcpClientAsync(); // 获取客户端
-                    var len = await clientTask.Client.ReceiveAsync(buf, SocketFlags.None);
-                    if (len == 0)
+                    var tcpClient =await _Listener.AcceptTcpClientAsync(); // 获取客户端
+                    var endPoint = (System.Net.IPEndPoint)tcpClient.Client.RemoteEndPoint;//获取远程连接IP
+                    var clientIP = endPoint.Address;//客户端连的地址
+                    var port = endPoint.Port;//客户端连的端口
+                    Console.WriteLine($"客户端已连接》{clientIP}:{port}");
+                    workStream = tcpClient.GetStream();
+                    if (workStream == null)
                     {
-                        clientTask.Dispose();
-                        break;
+                        Console.WriteLine($"接收到客户端数据为 null》{clientIP}:{port}");
+                        workStream.Close();
+                        workStream.Dispose();
+                        Console.WriteLine("关闭连接");
                     }
-                    Console.WriteLine($"客户端已连接，接收到的数据:{len}");
-                    var sendBuffer = new ArraySegment<byte>(buffer, 0, len);
-                    await clientTask.Client.SendAsync(sendBuffer, SocketFlags.None);//把消息发送回给客户端
-                    Console.WriteLine("已把数据发送到客户端");
-                    clientTask.GetStream().Dispose();
-                    Console.WriteLine("关闭连接");                   
+                    else
+                    {
+                        while (true)
+                        {
+                            #region 接收到客户端的消息                       
+                            await workStream.ReadAsync(buffer, 0, buffer.Length);//接收信息
+                            var message = Encoding.UTF8.GetString(buffer);
+                            Console.WriteLine("来自客户端消息：" + message.TrimEnd('\0'));
+                            #endregion
+                            #region 发送消息
+                            byte[] data = Encoding.UTF8.GetBytes("******** 欢迎来到服务端 ******** ");
+                            await workStream.WriteAsync(data, 0, data.Length);//发送信息     
+                            Console.WriteLine("已把数据发送到客户端");
+                            #endregion
+                        }
+                    }
+
+                    //var len = await tcpClient.Client.ReceiveAsync(buffer, SocketFlags.None);
+                    //if (len == 0)
+                    //{
+                    //    tcpClient.Dispose();
+                    //    break;
+                    //}
+                    //Console.WriteLine($"客户端已连接，接收到的数据:{len}");
+                    //var sendBuffer = new ArraySegment<byte>(buffer, 0, len);
+                    //await tcpClient.Client.SendAsync(sendBuffer, SocketFlags.None);//把消息发送回给客户端
+                    //Console.WriteLine("已把数据发送到客户端");
+                    //tcpClient.GetStream().Dispose();
+                    //Console.WriteLine("关闭连接");                   
 
                 }
 
