@@ -17,8 +17,7 @@ namespace QICore.NetSocketServer
         {
             //启动服务器
             Console.Title = "通信服务端Server";//设置窗口标题
-            TcpServer.StartServer("127.0.0.1", 3400);
-            TcpServer.ListenAsync(); //开始监听
+         
             var config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetCurrentDirectory())
               // .AddJsonFile("host.json", optional: true)
