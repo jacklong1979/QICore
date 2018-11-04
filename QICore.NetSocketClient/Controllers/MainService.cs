@@ -33,7 +33,8 @@ namespace QICore.NetSocketClient.Controllers
                 var port = 3400;
                 Task.Run(async () =>
                 {
-                    await TcpSocketClient.StartClientAsync(host, port);
+                    SocketClient.Listen();
+                    //await TcpSocketClient.StartClientAsync(host, port);
                 });
             }, cancellationToken);
         }

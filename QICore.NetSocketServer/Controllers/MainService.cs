@@ -31,15 +31,19 @@ namespace QICore.NetSocketServer.Controllers
             Console.WriteLine(" **************** MainService 已启动 **************** ");
             return Task.Run(() =>
             {
-                TcpServer.StartServer("127.0.0.1", 3400);
-                TcpServer.ListenAsync(); //开始监听
+                SocketService.Listen();
+                //TcpServer.StartServer("127.0.0.1", 3400);
+               // TcpServer.ListenAsync(); //开始监听
             }, cancellationToken);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
             logger.LogInformation(DateTime.Now + " StopAsync");
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {               
+            }, cancellationToken);
+            //  throw new NotImplementedException();
         }
     }
 }
