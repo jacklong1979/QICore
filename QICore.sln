@@ -23,9 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NDapper", "QICore.ND
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NQuartz", "QICore.NQuartz\QICore.NQuartz.csproj", "{97F4BEA2-BE44-489F-8787-B55A57A2A5C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NetSocketServer", "QICore.NetSocketServer\QICore.NetSocketServer.csproj", "{30148B8D-3C51-4907-A787-68AB46DBBDED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NetSocketServer", "QICore.NetSocketServer\QICore.NetSocketServer.csproj", "{30148B8D-3C51-4907-A787-68AB46DBBDED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NetSocketClient", "QICore.NetSocketClient\QICore.NetSocketClient.csproj", "{8B55E09B-6807-48A9-83C3-90D322C4A719}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NetSocketClient", "QICore.NetSocketClient\QICore.NetSocketClient.csproj", "{8B55E09B-6807-48A9-83C3-90D322C4A719}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.NxUnitTest", "QICore.NxUnitTest\QICore.NxUnitTest.csproj", "{AF3219A8-F112-4D90-B381-FBF2136627FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{8B55E09B-6807-48A9-83C3-90D322C4A719}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B55E09B-6807-48A9-83C3-90D322C4A719}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B55E09B-6807-48A9-83C3-90D322C4A719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF3219A8-F112-4D90-B381-FBF2136627FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF3219A8-F112-4D90-B381-FBF2136627FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF3219A8-F112-4D90-B381-FBF2136627FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF3219A8-F112-4D90-B381-FBF2136627FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
