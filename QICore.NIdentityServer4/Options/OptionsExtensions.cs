@@ -23,7 +23,7 @@ namespace QICore.NIdentityServer4.Options
         public static void AddOptions(this IServiceCollection services, IConfiguration configuration)
         {
             // 添加服务设置实例配置
-            //var identity = configuration.GetSection("IdentityOption");
+            services.Configure<IdentityOption>(configuration.GetSection("IdentityOption"));
             var symmetricKeyAsBase64 = configuration["IdentityOption:Secret"];
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);

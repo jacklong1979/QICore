@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.PlatformAbstractions;
+using QICore.NIdentityServer4.Common;
 using QICore.NIdentityServer4.Extensions;
 
 namespace QICore.NIdentityServer4
@@ -31,6 +34,7 @@ namespace QICore.NIdentityServer4
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddServiceSingleton(Configuration);
+          
             services.AddMvc();
             #region 设置允许跨域请求
             services.AddCors(options =>
@@ -54,10 +58,8 @@ namespace QICore.NIdentityServer4
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseIdentityServer();//【客户端模式】
-
-            app.UseMvc();
-           
+            app.UseIdentityServer();//【客户端模式】【密码模式】
+            app.UseMvc();           
         }
     }
 }

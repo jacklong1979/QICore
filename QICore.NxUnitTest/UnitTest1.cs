@@ -5,7 +5,8 @@ namespace QICore.NxUnitTest
 {
     public class UnitTest1
     {
-        [Fact]
+     
+        [Fact(DisplayName = "³ý·¨²âÊÔ")]
         public void Test1()
         {
             Assert.True(true);
