@@ -44,7 +44,8 @@ namespace QICore.OAuthResourceServer
             })
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters();
+                //ClockSkew:允许的服务器时间偏移量,默认是5分钟，如果不设置，时间有效期间到了以后，5分钟之内还可以访问资源
+                options.TokenValidationParameters = new TokenValidationParameters() { ValidateLifetime = true, ClockSkew = TimeSpan.FromSeconds(0) };               
                 options.RequireHttpsMetadata = false;
                 options.Audience = "api1";//api范围
                 options.Authority = "http://localhost:5000";//IdentityServer地址,发布token的服务地址

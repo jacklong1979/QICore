@@ -87,7 +87,8 @@ public class Config
                     //下面一句必须与：GetIdentityResourceResources同时出现
                   //  AllowedScopes = { "api1",IdentityServerConstants.StandardScopes.OpenId, //必须要添加，否则报forbidden错误
                   //IdentityServerConstants.StandardScopes.Profile},
-                      AllowedScopes = { "api1","api2" }
+                      AllowedScopes = { "api1","api2" },
+                    AccessTokenLifetime = option.ExpiresIn
                     // AllowedScopes =
                     //{
                     //    "api1","api2"
@@ -115,7 +116,8 @@ public class Config
                   //  AllowedScopes = { "api1",IdentityServerConstants.StandardScopes.OpenId, //必须要添加，否则报forbidden错误
                   //IdentityServerConstants.StandardScopes.Profile }
 
-                      AllowedScopes = { "api1" }
+                      AllowedScopes = { "api1" },
+                        AccessTokenLifetime = option.ExpiresIn
                 }
             };
     }
