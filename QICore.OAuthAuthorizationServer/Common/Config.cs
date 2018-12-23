@@ -69,6 +69,7 @@ public class Config
                 client.AllowedGrantTypes = GrantTypes.ClientCredentials;
                 client.ClientSecrets = clientSecrets;
                 client.AllowedScopes = scopes;
+                client.AccessTokenLifetime = option.ExpiresIn;
                 clientList.Add(client);
             }
         }
