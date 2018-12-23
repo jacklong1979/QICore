@@ -25,6 +25,12 @@ namespace QICore.NIdentityServer4.Common
             {
                 return false;
             }
+            var filePath = Path.Combine(directoryPath, filename);
+            if (!File.Exists(filePath))
+            {
+                RSAUtils.GenerateAndSaveKey(directoryPath);
+            }
+            
             keyParameters = JsonConvert.DeserializeObject<RSAParameters>(File.ReadAllText(Path.Combine(directoryPath, filename)));
             return true;
         }

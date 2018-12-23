@@ -38,7 +38,7 @@ namespace QICore.NIdentityServer4.Common
                 {
                     //Console.WriteLine(Convert.ToBase64String(provider.ExportCspBlob(false)));   //PublicKey
                     rsaString = Convert.ToBase64String(provider.ExportCspBlob(true));
-                    Console.WriteLine(rsaString);    //PrivateKey
+                    Console.WriteLine("证书："+rsaString);    //PrivateKey
                 }
             }
             //配置AccessToken的加密证书

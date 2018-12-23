@@ -42,8 +42,8 @@ namespace QICore.NIdentityServer4.Common
            //};
             #endregion
             var jwt = new JwtSecurityToken(
-               issuer: option.Issuer,
-               audience: option.Audience,
+               issuer: option.Issuer, // 发行者(颁发机构)
+               audience: option.Audience,//订阅人 ， 令牌的观众(颁发给谁)
                claims: claims,
                notBefore: DateTime.UtcNow,
                expires: option.ExpiresTime,
