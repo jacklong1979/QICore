@@ -92,10 +92,14 @@ namespace QICore.OAuthAuthorizationServer.Options
         /// <summary>
         /// 客户端模式( GrantTypes.ClientCredentials)的 Client
         /// </summary>
-        public List<ClientToScope> ClientCredentials { get; set; }        
+        public List<ClientToScope> ClientCredentials { get; set; }
+        /// <summary>
+        /// 密码模式( GrantTypes.ResourceOwnerPassword)的 Client
+        /// </summary>
+        public List<ClientToScope> ResourceOwnerPassword { get; set; }
     }
     /// <summary>
-    /// ClientId 对应的 Scope
+    /// ClientId 对应的 Scope 
     /// </summary>
     public class ClientToScope
     {

@@ -30,6 +30,14 @@ public class Config
                 apiList.Add(api);
             }
         }
+        if (option != null && option.ResourceOwnerPassword != null && option.ResourceOwnerPassword.Count > 0)
+        {
+            foreach (var o in option.ResourceOwnerPassword)
+            {
+                var api = new ApiResource(o.Scope, o.Description);
+                apiList.Add(api);
+            }
+        }
         return apiList;
         //return new List<ApiResource>
         //    {
@@ -67,6 +75,21 @@ public class Config
                 var client = new Client();
                 client.ClientId = o.ClientId;
                 client.AllowedGrantTypes = GrantTypes.ClientCredentials;
+                client.ClientSecrets = clientSecrets;
+                client.AllowedScopes = scopes;
+                client.AccessTokenLifetime = option.ExpiresIn;
+                clientList.Add(client);
+            }
+        }
+        if (option != null && option.ResourceOwnerPassword != null && option.ResourceOwnerPassword.Count > 0)
+        {
+            foreach (var o in option.ResourceOwnerPassword)
+            {
+                var clientSecrets = new Secret[] { new Secret(option.Secret.Sha256()) };
+                var scopes = new string[] { o.Scope }; ;
+                var client = new Client();
+                client.ClientId = o.ClientId;
+                client.AllowedGrantTypes = GrantTypes.ResourceOwnerPassword;
                 client.ClientSecrets = clientSecrets;
                 client.AllowedScopes = scopes;
                 client.AccessTokenLifetime = option.ExpiresIn;
