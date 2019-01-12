@@ -1,66 +1,69 @@
-﻿using Dapper;
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="System.Data.dll" #>
+<#@ assembly name="System.Xml"#>
+<#@ assembly name="System.Xml.Linq"#>
+<#@ assembly name="System.Data.DataSetExtensions.dll" #>
+<#@ assembly name="$(SolutionDir)\lib\Dapper.Dll"  #>
+
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Web" #>
+<#@ import namespace="System.Data.Common" #>
+<#@ import namespace="Dapper" #>
+<#@ import namespace="System.Reflection"#>
+<#@ import namespace="System.Xml.Linq"#>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating"#>
+<#@ output extension=".cs" #>
+<#@include file="DapperHelper.tt"#>  
+<#@include file="Manager.ttinclude"#>  
+<# var manager = new Manager(Host, GenerationEnvironment, true) { OutputPath = Path.GetDirectoryName(Host.TemplateFile)}; #>
+<#   
+
+    //当前项目目录
+    string projectDir ="$(ProjectDir)";
+    //解决方案目录
+    string solutionDir = "$(SolutionDir)"; 
+    
+#>
+<# manager.StartBlock("ModelTest.cs"); #> 
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
 
-namespace QICore.NDapper
+namespace testNameSpace
 {
-    public class Class1
+<# var user_obj = new string [] {"Name", "Age", "Education"}; #>
+class AutoCreate
+{
+<# for(int i= 0; i< user_obj.Length ; i ++){ #>
+    public static string <#= user_obj[i] #>;
+
+<# }#>
+}
+
+    public partial class testClass1
     {
-        #region 数据库类型，返回C#类型
-        public class SqlServerDbTypeMap
+        public testClass1()
         {
-            
-            public static string MapCsharpType(string dbtype)
-            {
-                if (string.IsNullOrEmpty(dbtype)) return dbtype;
-                dbtype = dbtype.ToLower();
-                string csharpType = "object";
-                switch (dbtype)
-                {
-                    case "bigint": csharpType = "long"; break;
-                    case "binary": csharpType = "byte[]"; break;
-                    case "bit": csharpType = "bool"; break;
-                    case "char": csharpType = "string"; break;
-                    case "date": csharpType = "DateTime"; break;
-                    case "datetime": csharpType = "DateTime"; break;
-                    case "datetime2": csharpType = "DateTime"; break;
-                    case "datetimeoffset": csharpType = "DateTimeOffset"; break;
-                    case "decimal": csharpType = "decimal"; break;
-                    case "float": csharpType = "double"; break;
-                    case "image": csharpType = "byte[]"; break;
-                    case "int": csharpType = "int"; break;
-                    case "money": csharpType = "decimal"; break;
-                    case "nchar": csharpType = "string"; break;
-                    case "ntext": csharpType = "string"; break;
-                    case "numeric": csharpType = "decimal"; break;
-                    case "nvarchar": csharpType = "string"; break;
-                    case "real": csharpType = "Single"; break;
-                    case "smalldatetime": csharpType = "DateTime"; break;
-                    case "smallint": csharpType = "short"; break;
-                    case "smallmoney": csharpType = "decimal"; break;
-                    case "sql_variant": csharpType = "object"; break;
-                    case "sysname": csharpType = "object"; break;
-                    case "text": csharpType = "string"; break;
-                    case "time": csharpType = "TimeSpan"; break;
-                    case "timestamp": csharpType = "byte[]"; break;
-                    case "tinyint": csharpType = "byte"; break;
-                    case "uniqueidentifier": csharpType = "Guid"; break;
-                    case "varbinary": csharpType = "byte[]"; break;
-                    case "varchar": csharpType = "string"; break;
-                    case "xml": csharpType = "string"; break;
-                    default: csharpType = "object"; break;
-                }
-                return csharpType;
-            }
         }
-        #endregion
+        public string name { get; set; }
+
+        public int age { get; set; }
+
+        public bool sex { get; set; }
     }
 }
+<# manager.EndBlock(); #>
+<# manager.Process(true);#>
+
+<#+
 #region 数据库帮助类型
-public class DapperHelper
+public class DapperHelper<T>
 {
     /// <summary>
     /// 数据库连接字符串
@@ -73,7 +76,7 @@ public class DapperHelper
     /// <param name="sql">查询的sql</param>
     /// <param name="param">替换参数</param>
     /// <returns></returns>
-    public static List<T> Query<T>(string sql, object param)
+    public static List<T> Query(string sql, object param)
     {
         using (SqlConnection con = new SqlConnection(connectionString))
         {
@@ -87,7 +90,7 @@ public class DapperHelper
     /// <param name="sql"></param>
     /// <param name="param"></param>
     /// <returns></returns>
-    public static T QueryFirst<T>(string sql, object param)
+    public static T QueryFirst(string sql, object param)
     {
         using (SqlConnection con = new SqlConnection(connectionString))
         {
@@ -101,7 +104,7 @@ public class DapperHelper
     /// <param name="sql"></param>
     /// <param name="param"></param>
     /// <returns></returns>
-    public static T QueryFirstOrDefault<T>(string sql, object param)
+    public static T QueryFirstOrDefault(string sql, object param)
     {
         using (SqlConnection con = new SqlConnection(connectionString))
         {
@@ -115,7 +118,7 @@ public class DapperHelper
     /// <param name="sql"></param>
     /// <param name="param"></param>
     /// <returns></returns>
-    public static T QuerySingle<T>(string sql, object param)
+    public static T QuerySingle(string sql, object param)
     {
         using (SqlConnection con = new SqlConnection(connectionString))
         {
@@ -129,7 +132,7 @@ public class DapperHelper
     /// <param name="sql"></param>
     /// <param name="param"></param>
     /// <returns></returns>
-    public static T QuerySingleOrDefault<T>(string sql, object param)
+    public static T QuerySingleOrDefault(string sql, object param)
     {
         using (SqlConnection con = new SqlConnection(connectionString))
         {
@@ -185,7 +188,7 @@ public class DapperHelper
     /// <param name="sql"></param>
     /// <param name="param"></param>
     /// <returns></returns>
-    public static T ExecuteScalarFor<T>(string sql, object param)
+    public static T ExecuteScalarForT(string sql, object param)
     {
         using (SqlConnection con = new SqlConnection(connectionString))
         {
@@ -199,7 +202,7 @@ public class DapperHelper
     /// <param name="sql"></param>
     /// <param name="param"></param>
     /// <returns></returns>
-    public static List<T> ExecutePro<T>(string proc, object param)
+    public static List<T> ExecutePro(string proc, object param)
     {
         using (SqlConnection con = new SqlConnection(connectionString))
         {
@@ -281,6 +284,52 @@ public class DapperHelper
         }
     }
 }
-
 #endregion
-
+ #region 数据库类型，返回C#类型
+        public class SqlServerDbTypeMap
+        {
+            public static string MapCsharpType(string dbtype)
+            {
+                if (string.IsNullOrEmpty(dbtype)) return dbtype;
+                dbtype = dbtype.ToLower();
+                string csharpType = "object";
+                switch (dbtype)
+                {
+                    case "bigint": csharpType = "long"; break;
+                    case "binary": csharpType = "byte[]"; break;
+                    case "bit": csharpType = "bool"; break;
+                    case "char": csharpType = "string"; break;
+                    case "date": csharpType = "DateTime"; break;
+                    case "datetime": csharpType = "DateTime"; break;
+                    case "datetime2": csharpType = "DateTime"; break;
+                    case "datetimeoffset": csharpType = "DateTimeOffset"; break;
+                    case "decimal": csharpType = "decimal"; break;
+                    case "float": csharpType = "double"; break;
+                    case "image": csharpType = "byte[]"; break;
+                    case "int": csharpType = "int"; break;
+                    case "money": csharpType = "decimal"; break;
+                    case "nchar": csharpType = "string"; break;
+                    case "ntext": csharpType = "string"; break;
+                    case "numeric": csharpType = "decimal"; break;
+                    case "nvarchar": csharpType = "string"; break;
+                    case "real": csharpType = "Single"; break;
+                    case "smalldatetime": csharpType = "DateTime"; break;
+                    case "smallint": csharpType = "short"; break;
+                    case "smallmoney": csharpType = "decimal"; break;
+                    case "sql_variant": csharpType = "object"; break;
+                    case "sysname": csharpType = "object"; break;
+                    case "text": csharpType = "string"; break;
+                    case "time": csharpType = "TimeSpan"; break;
+                    case "timestamp": csharpType = "byte[]"; break;
+                    case "tinyint": csharpType = "byte"; break;
+                    case "uniqueidentifier": csharpType = "Guid"; break;
+                    case "varbinary": csharpType = "byte[]"; break;
+                    case "varchar": csharpType = "string"; break;
+                    case "xml": csharpType = "string"; break;
+                    default: csharpType = "object"; break;
+                }
+                return csharpType;
+            }
+        }
+        #endregion
+#>

@@ -5,8 +5,63 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="DapperHelper.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DapperHelper.tt</DependentUpon>
+    </None>
+    <None Include="Manager.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Manager.tt</DependentUpon>
+    </None>
+    <None Include="ModelTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CSRedisCore" Version="3.0.25" />
     <PackageReference Include="Dapper" Version="1.50.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DapperHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DapperHelper.cs</LastGenOutput>
+    </None>
+    <None Update="Manager.ttinclude">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Manager.cs</LastGenOutput>
+    </None>
+    <None Update="ModelTemplate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ModelTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DapperHelper.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DapperHelper.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Manager.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Manager.ttinclude</DependentUpon>
+    </Compile>
+    <Compile Update="ModelTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
