@@ -5,17 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="DapperHelper.cs">
+    <None Include="T4Template\DapperHelper.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DapperHelper.tt</DependentUpon>
     </None>
-    <None Include="Manager.cs">
+    <None Include="T4Template\Manager.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Manager.tt</DependentUpon>
     </None>
-    <None Include="ModelTemplate.cs">
+    <None Include="T4Template\ModelTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
@@ -28,15 +28,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="DapperHelper.tt">
+    <None Update="T4Template\DapperHelper.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DapperHelper.cs</LastGenOutput>
     </None>
-    <None Update="Manager.ttinclude">
+    <None Update="T4Template\Manager.ttinclude">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Manager.cs</LastGenOutput>
     </None>
-    <None Update="ModelTemplate.tt">
+    <None Update="T4Template\ModelTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ModelTemplate.cs</LastGenOutput>
     </None>
@@ -47,17 +47,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="DapperHelper.cs">
+    <Compile Update="T4Template\DapperHelper.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DapperHelper.tt</DependentUpon>
     </Compile>
-    <Compile Update="Manager.cs">
+    <Compile Update="T4Template\Manager.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Manager.ttinclude</DependentUpon>
     </Compile>
-    <Compile Update="ModelTemplate.cs">
+    <Compile Update="T4Template\ModelTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
