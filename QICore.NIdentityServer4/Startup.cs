@@ -33,7 +33,7 @@ namespace QICore.NIdentityServer4
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           // services.AddServiceSingleton(Configuration);//扩展注入类
+            services.AddServiceSingleton(Configuration);//扩展注入类
           
             services.AddMvc();
             #region 设置允许跨域请求
