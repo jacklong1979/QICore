@@ -1,0 +1,56 @@
+{
+  "OutPath": "c:\\",
+  "NameSpace": "PR.WINPLANT",
+  "IConstrat": [
+    {
+      "TableName": "AUserInfo",
+      "Columns": [
+        {
+          "Name": "Id",
+          "DataType": "string",
+          "Length": 36,
+          "IsPrimaryKey": true,
+          "ReadOnly": false,
+          "Comment": "主键||唯一主键"
+        },
+        {
+          "Name": "UserId",
+          "DataType": "string",
+          "Length": 36,
+          "IsPrimaryKey": false,
+          "ReadOnly": false,
+          "Comment": "用户ID|textbox|"
+        },
+        {
+          "Name": "UserName",
+          "DataType": "string",
+          "Length": 36,
+          "IsPrimaryKey": false,
+          "ReadOnly": false,
+          "Comment": "用户名|textbox|用户登录的姓名"
+        },
+        {
+          "Name": "OrgName",
+          "DataType": "string",
+          "Length": 36,
+          "IsPrimaryKey": false,
+          "ReadOnly": false,
+          "Comment": "组职架构的名称|input|与Org表一致"
+        }
+      ]
+    },
+    {
+      "TableName": "AConstrat",
+      "Columns": [
+        {
+          "Name": "UserName",
+          "DataType": null,
+          "Length": 0,
+          "IsPrimaryKey": null,
+          "ReadOnly": null,
+          "Comment": null
+        }
+      ]
+    }
+  ]
+}

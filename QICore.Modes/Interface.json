@@ -1,0 +1,37 @@
+{
+  "OutPath": "c:\\",
+  "NameSpace": "PR.WINPLANT",
+  "InterfaceList": [
+    {
+      "InterfaceName": "IUser",
+      "Features": [
+        {
+          "Description": "获取用户名",
+          "Name": "GetUserInfo",
+          "Result": "string",
+          "Parameters": {
+            "id,string": "用户id",
+            "userName,string": "用户名"
+          }
+        },
+        {
+          "Description": "获取Easc用户名",
+          "Name": "GetEaseUserInfo",
+          "Result": "void",
+          "Parameters": { "userId": "用户id" }
+        },
+        {
+          "Description": "获取ORC",
+          "Name": "GetORCUserInfo",
+          "Result": "void",
+          "Parameters": {
+            "userId": "用户id",
+            "orgId": "组职ID",
+            "pcId": "电脑ID",
+            "model,Object": "对象"
+          }
+        }
+      ]
+    }
+  ]
+}

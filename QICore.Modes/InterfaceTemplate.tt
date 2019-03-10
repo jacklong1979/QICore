@@ -1,0 +1,154 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="Newtonsoft.Json.dll" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="Newtonsoft.Json.Converters" #>
+<#@ output extension=".cs" #>
+<#@include file="Manager.ttinclude"#>  
+<# var manager = new Manager(Host, GenerationEnvironment, true) { OutputPath = Path.GetDirectoryName(Host.TemplateFile)}; #>
+<# var model = new InterfaceHelper() {}; #>
+<#     
+    //解决方案目录  
+	string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");
+	 //当前项目目录
+	string projectPath = Host.ResolveAssemblyReference("$(ProjectDir)");
+	 //生成的主输出文件的目录（定义形式：驱动器 + 路径）；包括尾部的反斜杠“\”。
+	string targetPath = Host.ResolveAssemblyReference("$(TargetDir)");
+	var modelJasonPath=$"{projectPath}Interface.json";
+   
+	var modelEntity=model.GetModels(modelJasonPath);
+	var outPath=modelEntity.OutPath;
+    var nameSpace=modelEntity.NameSpace;
+	
+#>
+//===============================上面是定义变量======================================
+ //===循环开始===
+ <# if(modelEntity!=null&&modelEntity.InterfaceList!=null&&modelEntity.InterfaceList.Count>0) 
+ {
+	foreach(var entity in modelEntity.InterfaceList)
+	{ #>
+	 <# manager.StartBlock(entity.InterfaceName+".cs");  #> 
+		using System;	
+		using System.IO; 
+		namespace <#=modelEntity.NameSpace #> 
+		{
+			/// <summary>
+			///接口：<#=entity.InterfaceName #> 
+			/// </summary>		
+			interface <#=entity.InterfaceName #>
+			{ 
+
+			<# if(entity.Features!=null&&entity.Features.Count>0)
+				 {
+					foreach(var feature in entity.Features)
+					{
+						 var parmList = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(feature.Parameters.ToString());
+						var comment = string.Empty;
+						 var parmString = string.Empty;
+						comment += " /// <summary>\r\n";
+					    comment += $" ///{feature.Description}\r\n";
+						comment += " /// <summary>\r\n";
+						if (parmList != null && parmList.Count > 0)
+						{							
+							foreach (var parm in parmList)
+							{
+								var name = parm.Key.Split(',').Length>1? parm.Key.Split(',')[0]: parm.Key;
+								var dataType = parm.Key.Split(',').Length > 1 ? parm.Key.Split(',')[1] :"string";
+								var desc = parm.Value;                   
+								comment += $"///<param name=\"{name}\">{desc}</param>\r\n";
+								 parmString += $"{dataType} {name},";
+							}
+						}
+						comment += " ///<returns></returns>\r\n";
+						parmString = parmString.TrimEnd(',');
+					#>
+			      <#=comment #>
+				 <#=feature.Result #> <#=feature.Name #>( <#=parmString #>);
+				<#} }#>		
+			
+
+			}    
+		 }	 
+    <# manager.EndBlock(); #>
+	<#}
+ }
+ #>
+ <# manager.Process(true);#>//文件分离
+
+
+<#+
+public class InterfaceHelper
+{
+      public InterfaceEntity GetModels(string jsonPath)
+        {
+            InterfaceEntity model =null;
+            //读取json文件  
+            using (StreamReader sr = new StreamReader(jsonPath,System.Text.Encoding.Default))
+            {
+                try
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                    serializer.NullValueHandling = NullValueHandling.Ignore;
+                    //构建Json.net的读取流  
+                    JsonReader reader = new JsonTextReader(sr);
+                    //对读取出的Json.net的reader流进行反序列化，并装载到模型中  
+                    model = serializer.Deserialize<InterfaceEntity>(reader);                  
+                }
+                catch (Exception ex)
+                {
+                    ex.Message.ToString();
+                }
+            }
+            return model;
+        }
+}
+  public class InterfaceEntity
+    {
+        /// <summary>
+        /// 输出路径
+        /// </summary>
+        public string OutPath { get; set; }
+        /// <summary>
+        ///命名空间
+        /// </summary>
+        public string NameSpace { get; set; }
+        /// <summary>
+        /// 接口列表
+        /// </summary>
+        public List<InterfaceMode> InterfaceList { get; set; }
+    }
+    public class InterfaceMode
+    {
+        /// <summary>
+        /// 接口名称
+        /// </summary>
+        public string InterfaceName { get; set; }
+        /// <summary>
+        /// 功能列表
+        /// </summary>
+        public List<Feature> Features { get; set; }
+    }
+    public class Feature
+    {
+        /// <summary>
+        /// 接口名称
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// 返回的结构果
+        /// </summary>
+        public string Result { get; set; }
+        /// <summary>
+        /// 参数
+        /// </summary>
+        public Object Parameters { get; set; }       
+        /// <summary>
+        /// 中文说明|前端控件名称|逻辑说明
+        /// </summary>
+        public string Description { get; set; }
+    }
+#>
