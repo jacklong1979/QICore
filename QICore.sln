@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NIdentityServer4", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.Modes", "QICore.Modes\QICore.Modes.csproj", "{4099E72C-3257-4F40-ADBA-68F24301CABD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.AMvc", "QICore.AMvc\QICore.AMvc.csproj", "{9A7F7B8E-DBC1-43C9-8E28-85B7FA61EA21}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NRabbitMQ", "QICore.NRabbitMQ\QICore.NRabbitMQ.csproj", "{B92199F3-201B-4D0A-BD2D-B944D3D40FBA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NDapper", "QICore.NDapper\QICore.NDapper.csproj", "{A802D35D-A427-4868-858A-53BC990FD012}"
@@ -29,9 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NetSocketClient", "Q
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.NxUnitTest", "QICore.NxUnitTest\QICore.NxUnitTest.csproj", "{AF3219A8-F112-4D90-B381-FBF2136627FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.OAuthAuthorizationServer", "QICore.OAuthAuthorizationServer\QICore.OAuthAuthorizationServer.csproj", "{9034DBA4-728B-43CF-99CB-E7028CBA40FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.OAuthAuthorizationServer", "QICore.OAuthAuthorizationServer\QICore.OAuthAuthorizationServer.csproj", "{9034DBA4-728B-43CF-99CB-E7028CBA40FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.OAuthResourceServer", "QICore.OAuthResourceServer\QICore.OAuthResourceServer.csproj", "{0BFCEF87-030A-4DC2-AFE9-16610D42A1C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.OAuthResourceServer", "QICore.OAuthResourceServer\QICore.OAuthResourceServer.csproj", "{0BFCEF87-030A-4DC2-AFE9-16610D42A1C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.CoreMvc", "QICore.CoreMvc\QICore.CoreMvc.csproj", "{68CB18D6-AE44-46E0-8C7C-3FB8D5831198}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +63,6 @@ Global
 		{4099E72C-3257-4F40-ADBA-68F24301CABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4099E72C-3257-4F40-ADBA-68F24301CABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4099E72C-3257-4F40-ADBA-68F24301CABD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9A7F7B8E-DBC1-43C9-8E28-85B7FA61EA21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A7F7B8E-DBC1-43C9-8E28-85B7FA61EA21}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A7F7B8E-DBC1-43C9-8E28-85B7FA61EA21}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A7F7B8E-DBC1-43C9-8E28-85B7FA61EA21}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B92199F3-201B-4D0A-BD2D-B944D3D40FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B92199F3-201B-4D0A-BD2D-B944D3D40FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B92199F3-201B-4D0A-BD2D-B944D3D40FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -99,6 +95,10 @@ Global
 		{0BFCEF87-030A-4DC2-AFE9-16610D42A1C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BFCEF87-030A-4DC2-AFE9-16610D42A1C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BFCEF87-030A-4DC2-AFE9-16610D42A1C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68CB18D6-AE44-46E0-8C7C-3FB8D5831198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68CB18D6-AE44-46E0-8C7C-3FB8D5831198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68CB18D6-AE44-46E0-8C7C-3FB8D5831198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68CB18D6-AE44-46E0-8C7C-3FB8D5831198}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
