@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.OAuthResourceServer"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QICore.CoreMvc", "QICore.CoreMvc\QICore.CoreMvc.csproj", "{68CB18D6-AE44-46E0-8C7C-3FB8D5831198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.OIDC", "QICore.OIDC\QICore.OIDC.csproj", "{21FB7CC1-29EE-491F-993F-15851AE16B8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QICore.OIDC", "QICore.OIDC\QICore.OIDC.csproj", "{8347E9AB-8956-4A71-BC9C-5278AF81DBA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,10 +101,10 @@ Global
 		{68CB18D6-AE44-46E0-8C7C-3FB8D5831198}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68CB18D6-AE44-46E0-8C7C-3FB8D5831198}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68CB18D6-AE44-46E0-8C7C-3FB8D5831198}.Release|Any CPU.Build.0 = Release|Any CPU
-		{21FB7CC1-29EE-491F-993F-15851AE16B8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{21FB7CC1-29EE-491F-993F-15851AE16B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{21FB7CC1-29EE-491F-993F-15851AE16B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{21FB7CC1-29EE-491F-993F-15851AE16B8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8347E9AB-8956-4A71-BC9C-5278AF81DBA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8347E9AB-8956-4A71-BC9C-5278AF81DBA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8347E9AB-8956-4A71-BC9C-5278AF81DBA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8347E9AB-8956-4A71-BC9C-5278AF81DBA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -52,7 +52,7 @@ namespace QICore.NIdentityServer4.Common
 
             var token = new
             {
-                access_token = encodedJwt,
+                access_token = encodedJwt, 
                 token_type = option.TokenType,
                 expires_in = option.ExpiresIn, //过期时间(秒)
                 expires_time = option.ExpiresTime.ToString("yyyy-MM-dd HH:mm:ss"), //过期时间（日期）
