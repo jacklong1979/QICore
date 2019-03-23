@@ -5,24 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="InterfaceTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>InterfaceTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ModelTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-    </Compile>
+    <Compile Remove="InterfaceTemplate.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="InterfaceTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>InterfaceTemplate.tt</DependentUpon>
-    </None>
+    <None Remove="InterfaceTemplate.tt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,26 +21,10 @@
       <LastGenOutput>ModelTemplate.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="InterfaceTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>InterfaceTemplate.cs</LastGenOutput>
-    </None>
-    <None Update="Manager.ttinclude">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Manager.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Manager.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Manager.ttinclude</DependentUpon>
-    </Compile>
   </ItemGroup>
 
 </Project>

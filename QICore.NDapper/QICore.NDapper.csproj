@@ -25,6 +25,7 @@
   <ItemGroup>
     <PackageReference Include="CSRedisCore" Version="3.0.25" />
     <PackageReference Include="Dapper" Version="1.50.5" />
+    <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 
   <ItemGroup>
