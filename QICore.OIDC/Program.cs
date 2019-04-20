@@ -19,6 +19,12 @@ namespace QICore.OIDC
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+             .UseUrls("http://localhost:5000")
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .ConfigureLogging((hostingContext, logging) =>
+            {
+                logging.AddConsole();
+            })       
+            .UseStartup<Startup>();
     }
 }
