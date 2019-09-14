@@ -57,18 +57,53 @@ namespace QICore.QuartzCore.Jobs
                                                              //  var data = context.MergedJobDataMap;//获取Job和Trigger中合并的参数
                 var value1 = jobData.GetString("key1");
                 var value2 = jobData.GetString("key2");//
-                var value3=triggerData.GetInt("key3");
+                var flag = jobData.GetInt("flag");
                 // var value3 = data.GetString("key2");
 
                 await Task.Run(() =>
                 {
-                    logger.Info($"参数key1:{value1}");                  
+//                    ==============================（Install - Package DynamicExpresso.Core）======================================
+
+//var whereExpression = $"m.{queryField}==\"{queryValue}\"";
+
+//                string whereExpression = "customer.Age > 18 && customer.Gender == 'F'";
+
+//                var interpreter = new Interpreter();
+//                Func<Customer, bool> dynamicWhere = interpreter.ParseAsDelegate<Func<Customer, bool>>(whereExpression, "customer");
+
+//                Assert.AreEqual(1, customers.Where(dynamicWhere).Count());
+
+//=====================================================================================================
+//string whereExpression = "customer.Age > 18 && customer.Gender == 'F'";
+
+//var interpreter = new Interpreter();
+//Expression<Func<Customer, bool>> expression = interpreter.ParseAsExpression<Func<Customer, bool>>(whereExpression, "customer");
+
+                    var code = "i<100&&s.Contains(\"测试\")";
+                    var interpreter = new DynamicExpresso.Interpreter();
+                    var result = interpreter.ParseAsDelegate<Func<int, string, bool>>(code, "i", "s");
+                    //var result = interpreter.ParseAsExpression<Func<int, string, bool>>(code, "i", "s").Compile();
+                    for (int i = 0; i < 102; i++)
+                    {
+                        var v = result(i, "我在测试" + i);//2213ms
+                        logger.Warn(v);
+                                                      //Console.WriteLine(v);
+                    }
+                    for (var i = 0; i < 10; i++)
+                    {
+                        logger.Info($"参数作业:{flag}");
+                    }
+                    //context.Scheduler.UnscheduleJob(context.Trigger.Key);// 移除触发器
+                    //context.Scheduler.DeleteJob(context.JobDetail.Key);// 删除任务
+
+                    //context.Scheduler.Shutdown();
                     //Thread.Sleep(5000);
                 });
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+               await context.Scheduler.Shutdown();
+                logger.Error(e.ToString());
             }
         }
     }

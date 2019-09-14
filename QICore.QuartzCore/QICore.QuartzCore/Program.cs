@@ -66,11 +66,12 @@ namespace QICore.QuartzCore
            // await NewMethod(currTime);
             try
             {
-                for (var i = 0; i < 10; i++)
-                {
-                    await QuartzHelper.AddJob($"深圳{i}", "广东省");
-                }             
-                //QuartzHelper.AddJob<TestJob>(3, "作业1", "中国");
+
+                //for (var i = 0; i < 10; i++)
+                //{
+                //    await QuartzHelper.AddJob($"深圳{i}", "广东省");
+                //}             
+              await  QuartzHelper.AddJob<MainJob>(3,"作业1", "中国");
             }
             catch (Exception e)
             {
