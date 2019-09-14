@@ -40,42 +40,55 @@ namespace QICore.QuartzCore
 
         static async Task Main(string[] args)
         {
-            ILoggerRepository repository = LogManager.CreateRepository("NETCoreRepository");
-            XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
-            ILog log = LogManager.GetLogger(repository.Name, "Program");
-
-            log.Info("中国人民");
-            log.Error("发大水");
-            log.Warn("夫规定");
-            log.Debug("魂牵梦萦");
-            //配置文件
-            var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);     
-            IConfigurationRoot configuration = builder.Build();
+            BaseIoc.InitIoc();//初始化容器           
+            //var builder = new ConfigurationBuilder()
+            //.SetBasePath(Directory.GetCurrentDirectory())
+            //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            //IConfigurationRoot configuration = builder.Build();
 
             var services = new ServiceCollection().AddLogging().BuildServiceProvider();
             services.GetService<ILoggerFactory>().AddConsole(LogLevel.Debug);
-            //注入
-            //  services.AddTransient<IMemcachedClient, MemcachedClient>();
-            //services.AddLogging();
-            //构建容器
-            //  IServiceProvider serviceProvider = services.BuildServiceProvider();
-            var logger = services.GetService<ILoggerFactory>().CreateLogger<Program>();
-            logger.LogInformation("LogInformationLogInformationLogInformationLogInformation");
-            logger.LogWarning("LogWarningLogWarningLogWarningLogWarningLogWarning");
-            logger.LogError("LogErrorLogErrorLogErrorLogError");
-            logger.LogDebug("DebugDebugDebug");
-            //解析
-            // var memcachedClient = serviceProvider.GetService<IMemcachedClient>();
 
-            var currTime = DateTime.Now;
-            Console.WriteLine($"当前时间：{currTime}");
+            ////注入
+            ////  services.AddTransient<IMemcachedClient, MemcachedClient>();
+            ////services.AddLogging();
+            ////构建容器
+            ////  IServiceProvider serviceProvider = services.BuildServiceProvider();
+            var logger = services.GetService<ILoggerFactory>().CreateLogger<Program>();
+            //logger.LogInformation("LogInformationLogInformationLogInformationLogInformation");
+            //logger.LogWarning("LogWarningLogWarningLogWarningLogWarningLogWarning");
+            //logger.LogError("LogErrorLogErrorLogErrorLogError");
+            //logger.LogDebug("DebugDebugDebug");
+            ////解析
+
+            //var currTime = DateTime.Now;
+            //Console.WriteLine($"当前时间：{currTime}");
+           // await NewMethod(currTime);
+            try
+            {
+                for (var i = 0; i < 10; i++)
+                {
+                    await QuartzHelper.AddJob($"深圳{i}", "广东省");
+                }             
+                //QuartzHelper.AddJob<TestJob>(3, "作业1", "中国");
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+            }
+            // QuartzHelper.AddJob<Test2Job>(5, "作业2", "中国");
+            // QuartzHelper.AddJob<Test3Job>(7, "作业3", "中国");
+            Console.WriteLine("Hello World!");
+            Console.Read();
+        }
+
+        private static async Task NewMethod(DateTime currTime)
+        {
             _schedulerFactory = new StdSchedulerFactory();
             //1、通过调度工厂获得调度器
             _scheduler = await _schedulerFactory.GetScheduler();
             //添加监听器到指定的trigger
-           
+
             _scheduler.ListenerManager.AddSchedulerListener(new CustomSchedulerListener());
             _scheduler.ListenerManager.AddTriggerListener(new CustomTriggerListener());
             _scheduler.ListenerManager.AddJobListener(new CustomJobListener());
@@ -99,11 +112,11 @@ namespace QICore.QuartzCore
             var startTime = currTime.AddSeconds(5);
             var trigger = TriggerBuilder.Create()
                 .UsingJobData("key3", ++index)
-                .WithIdentity("执行表达式","大数据")
+                .WithIdentity("执行表达式", "大数据")
                             .StartAt(startTime)//设置任务开始时间
                             .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever())//每两秒执行一次
                             .Build();
-           
+
             var trigger2 = TriggerBuilder.Create()
                .WithIdentity("手环", "大数据")
                            .StartAt(startTime)//设置任务开始时间
@@ -119,17 +132,15 @@ namespace QICore.QuartzCore
             Console.WriteLine($"开始时间：{startTime}");
             //4、创建任务(job)
             var jobDetail = JobBuilder.Create<TestJob>()
-                .UsingJobData("key1","AAAAAAAAAAA")
+                .UsingJobData("key1", "AAAAAAAAAAA")
                 .UsingJobData("key2", "BBBBBBBBBB")
                 .WithIdentity("job", "group").Build();
             var jobDetail2 = JobBuilder.Create<Test2Job>().WithIdentity("job2", "group").Build();
             var jobDetailCron = JobBuilder.Create<Test3Job>().WithIdentity("job3", "group").Build();
             //5、将触发器和任务器绑定到调度器中
             await _scheduler.ScheduleJob(jobDetail, trigger);
-           // await _scheduler.ScheduleJob(jobDetail2, trigger2);
-           // await _scheduler.ScheduleJob(jobDetailCron, cronTrigger);
-            Console.WriteLine("Hello World!");
-            Console.Read();
+            // await _scheduler.ScheduleJob(jobDetail2, trigger2);
+            // await _scheduler.ScheduleJob(jobDetailCron, cronTrigger);
         }
         #region 多任务
         public static void StartJobs<TJob>() where TJob : IJob

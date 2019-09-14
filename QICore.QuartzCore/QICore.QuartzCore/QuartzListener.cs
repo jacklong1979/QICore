@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using log4net;
+using Quartz;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,18 +11,20 @@ namespace QICore.QuartzCore
     #region IJobListener
     public class CustomJobListener : IJobListener
     {
+
+        private readonly ILog logger = Log4Helper.GetLogger(typeof(CustomJobListener));
         public string Name => "CustomJobListener";
         public async Task JobExecutionVetoed(IJobExecutionContext context, CancellationToken cancellationToken)
         {
             await Task.Run(() => {
-                Console.WriteLine($"IJobListener [1]【Job 执行被否决】 {context.JobDetail.Description}");
+                 logger.Info($"IJobListener [1]【Job 执行被否决】 {context.JobDetail.Description}");
             });
         }
         public async Task JobToBeExecuted(IJobExecutionContext context, CancellationToken cancellationToken)
         {
             var jobName = ((Quartz.Impl.Triggers.AbstractTrigger)((Quartz.Impl.JobExecutionContextImpl)context).Trigger).JobName;
             await Task.Run(() => {
-                Console.WriteLine($"IJobListener [2]【Job 正在执行...】 {jobName}");
+                 logger.Info($"IJobListener [2]【Job 正在执行...】 {jobName}");
             });
         }
         public async Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException, CancellationToken cancellationToken)
@@ -29,7 +32,7 @@ namespace QICore.QuartzCore
             var jobName = ((Quartz.Impl.Triggers.AbstractTrigger)((Quartz.Impl.JobExecutionContextImpl)context).Trigger).JobName;
 
             await Task.Run(() => {
-                Console.WriteLine($"IJobListener [3]【Job 已执行完成】 {jobName}");
+                 logger.Info($"IJobListener [3]【Job 已执行完成】 {jobName}");
             });
         }
     }
@@ -37,6 +40,7 @@ namespace QICore.QuartzCore
     #region ITriggerListener
     public class CustomTriggerListener : ITriggerListener
     {
+        private readonly ILog logger = Log4Helper.GetLogger(typeof(CustomJobListener));
         public string Name => "CustomTriggerListener";
 
         public async Task TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode, CancellationToken cancellationToken)
@@ -44,7 +48,7 @@ namespace QICore.QuartzCore
             var triggerTemp = ((Quartz.Impl.Triggers.AbstractTrigger)trigger);
             await Task.Run(() =>
             {
-                Console.WriteLine($"ITriggerListener [4]【触发完成】 {triggerTemp.FullJobName}");
+                 logger.Info($"ITriggerListener [4]【触发完成】 {triggerTemp.FullJobName}");
             });
         }
 
@@ -54,7 +58,7 @@ namespace QICore.QuartzCore
             var triggerTemp = ((Quartz.Impl.Triggers.AbstractTrigger)trigger);
             await Task.Run(() =>
             {
-                Console.WriteLine($"ITriggerListener [5]【触发执行中】 {triggerTemp.FullJobName}");
+                 logger.Info($"ITriggerListener [5]【触发执行中】 {triggerTemp.FullJobName}");
             });
         }
         /**
@@ -67,7 +71,7 @@ namespace QICore.QuartzCore
             var triggerTemp = ((Quartz.Impl.Triggers.AbstractTrigger)trigger);
             await Task.Run(() =>
             {
-                Console.WriteLine($"ITriggerListener [6]【不起作用】 {triggerTemp.FullJobName}");
+                 logger.Info($"ITriggerListener [6]【不起作用】 {triggerTemp.FullJobName}");
             });
         }
 
@@ -84,7 +88,7 @@ namespace QICore.QuartzCore
             var triggerTemp = ((Quartz.Impl.Triggers.AbstractTrigger)trigger);
             await Task.Run(() =>
             {
-                Console.WriteLine($"ITriggerListener [7]【终止作业执行】 {triggerTemp.FullJobName}");
+                 logger.Info($"ITriggerListener [7]【终止作业执行】 {triggerTemp.FullJobName}");
             });
             return false;//false 才能继续执行
         }
@@ -93,12 +97,13 @@ namespace QICore.QuartzCore
     #region ISchedulerListener
     public class CustomSchedulerListener : ISchedulerListener
     {
+        private readonly ILog logger = Log4Helper.GetLogger(typeof(CustomJobListener));
         public Task JobAdded(IJobDetail jobDetail, CancellationToken cancellationToken)
         {
             var job = (Quartz.Impl.JobDetailImpl)jobDetail;
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [8]【增加Job】 {job.FullName}");
+                 logger.Info($"ISchedulerListener [8]【增加Job】 {job.FullName}");
             });
         }
 
@@ -106,7 +111,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [9]【删除Job】 {jobKey.Name}");
+                 logger.Info($"ISchedulerListener [9]【删除Job】 {jobKey?.ToString()}");
             });
         }
 
@@ -114,7 +119,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [10]【中断Job】 {jobKey.Name}");
+                 logger.Warn($"ISchedulerListener [10]【中断Job】 {jobKey?.ToString()}");
             });
         }
 
@@ -122,7 +127,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [11]【暂停Job】 {jobKey.Name}");
+                 logger.Warn($"ISchedulerListener [11]【暂停Job】 {jobKey?.ToString()}");
             });
         }
 
@@ -130,7 +135,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [12]【恢复ob】 {jobKey.Name}");
+                 logger.Info($"ISchedulerListener [12]【恢复ob】 {jobKey?.ToString()}");
             });
         }
 
@@ -139,7 +144,7 @@ namespace QICore.QuartzCore
             var trigerTemp = ((Quartz.Impl.Triggers.AbstractTrigger)trigger);
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [13]【计划Job】 {trigerTemp.FullJobName}({trigerTemp.FullName})");
+                logger.Info($"ISchedulerListener [13]【计划Job】 {trigerTemp.FullJobName}({trigerTemp.FullName})");
             });
         }
 
@@ -147,7 +152,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [14]【暂停Job组】 {jobGroup}");
+                 logger.Info($"ISchedulerListener [14]【暂停Job组】 {jobGroup}");
             });
         }
 
@@ -155,7 +160,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [15]【恢复Job组】 { jobGroup}");
+                 logger.Info($"ISchedulerListener [15]【恢复Job组】 { jobGroup}");
             });
         }
 
@@ -163,7 +168,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [16]【未计划的Job】 { triggerKey.Name}");
+                 logger.Info($"ISchedulerListener [16]【未计划的Job】 { triggerKey.Name}");
             });
         }
 
@@ -171,7 +176,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [17]【调度程序错误】 { msg}");
+                 logger.Error($"ISchedulerListener [17]【调度程序错误】 { msg}");
             });
         }
 
@@ -179,7 +184,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [18]【调度待机模式】 ");
+                 logger.Info($"ISchedulerListener [18]【调度待机模式】 ");
             });
         }
 
@@ -187,7 +192,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [19]【调度关闭】 ");
+                 logger.Info($"ISchedulerListener [19]【调度关闭】 ");
             });
         }
 
@@ -195,7 +200,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [20]【调度停止】 ");
+                 logger.Info($"ISchedulerListener [20]【调度停止】 ");
             });
         }
 
@@ -203,7 +208,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [21]【调度已经开始】 ");
+                 logger.Info($"ISchedulerListener [21]【调度已经开始】 ");
             });
         }
 
@@ -211,7 +216,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [22]【调度正在开始.....】 ");
+                 logger.Info($"ISchedulerListener [22]【调度正在开始.....】 ");
             });
         }
 
@@ -219,7 +224,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [23]【调度正在清理数据.....】 ");
+                 logger.Info($"ISchedulerListener [23]【调度正在清理数据.....】 ");
             });
         }
 
@@ -227,7 +232,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [24]【调度正在清理数据.....】 ");
+                 logger.Info($"ISchedulerListener [24]【调度正在清理数据.....】 ");
             });
         }
 
@@ -235,7 +240,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [25]【TriggerPaused】 ");
+                 logger.Info($"ISchedulerListener [25]【TriggerPaused】 ");
             });
         }
 
@@ -243,7 +248,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [26]【TriggerResumed】 ");
+                 logger.Info($"ISchedulerListener [26]【TriggerResumed】 ");
             });
         }
 
@@ -251,7 +256,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [27]【TriggersPaused】 ");
+                 logger.Info($"ISchedulerListener [27]【TriggersPaused】 ");
             });
         }
 
@@ -259,7 +264,7 @@ namespace QICore.QuartzCore
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ISchedulerListener [28]【TriggersResumed】 ");
+                 logger.Info($"ISchedulerListener [28]【TriggersResumed】 ");
             });
         }
     }
