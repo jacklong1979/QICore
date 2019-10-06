@@ -1,0 +1,88 @@
+﻿using Autofac;
+using Autofac.Core;
+using Autofac.Extensions.DependencyInjection;
+using log4net;
+using log4net.Config;
+using log4net.Repository;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+
+namespace QICore.ElasticSearchCore
+{
+    public interface IDenpendency
+    {
+    }
+    public class AutofacIoc
+    {
+        private static ContainerBuilder _builder = new ContainerBuilder();
+        private static IContainer _container;
+        /// <summary>
+        /// 注册所有继承IDenpendency的接口
+        /// </summary>
+        /// <returns></returns>
+        public static ContainerBuilder Register()
+        {
+            var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", true, true)
+            .AddJsonFile("appsettings.Development.json", true, true)
+            .Build();
+            IServiceCollection services = new ServiceCollection();
+
+            ILoggerRepository repository = LogManager.CreateRepository("NETCoreRepository");
+            XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));  
+            var builder = new ContainerBuilder();
+            Type basetype = typeof(IDenpendency);
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .Where(t => basetype.IsAssignableFrom(t) && t.IsClass)
+                .AsImplementedInterfaces().InstancePerLifetimeScope();
+             _builder=builder;
+            _container = builder.Build();
+            return builder;
+        }      
+
+        /// <summary>
+        /// 注册一个单例实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        public static void Register<T>(T instance) where T : class
+        {
+            _builder.RegisterInstance(instance).SingleInstance();
+        }
+        public static void Register<TClass,TInterface>() 
+        {
+            _builder.RegisterType<TClass>().As<TInterface>();           
+        }
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T Resolve<T>()
+        {
+            return _container.Resolve<T>();
+        }
+
+        public static T Resolve<T>(params Parameter[] parameters)
+        {
+            return _container.Resolve<T>(parameters);
+        }
+
+        public static object Resolve(Type targetType)
+        {
+            return _container.Resolve(targetType);
+        }
+
+        public static object Resolve(Type targetType, params Parameter[] parameters)
+        {
+            return _container.Resolve(targetType, parameters);
+        }
+    }
+}
