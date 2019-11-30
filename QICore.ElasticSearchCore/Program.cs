@@ -20,9 +20,9 @@ namespace QICore.ElasticSearchCore
 
             const int numberOfCycles = 10;
             var node = new Uri("http://localhost:9200");
-            var settings = new ConnectionSettings(
-                node
-            ).DefaultIndex("people");
+            ConnectionSettings connectionSettings = new ConnectionSettings(
+                node);
+            ConnectionSettings settings = connectionSettings.DefaultIndex("people");
             var client = new ElasticClient(settings);
             //var searchResults = client.Search<Person>(s => s
             //    .From(0)

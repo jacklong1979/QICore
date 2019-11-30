@@ -1,17 +1,14 @@
 ﻿using Autofac;
 using Autofac.Core;
-using Autofac.Extensions.DependencyInjection;
 using log4net;
 using log4net.Config;
 using log4net.Repository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace QICore.ElasticSearchCore
 {
@@ -22,8 +19,9 @@ namespace QICore.ElasticSearchCore
     {
         private static ContainerBuilder _builder = new ContainerBuilder();
         private static IContainer _container;
+
         /// <summary>
-        /// 注册所有继承IDenpendency的接口
+        /// 注册所有继承IDenpendency的接口.
         /// </summary>
         /// <returns></returns>
         public static ContainerBuilder Register()
@@ -42,24 +40,32 @@ namespace QICore.ElasticSearchCore
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                 .Where(t => basetype.IsAssignableFrom(t) && t.IsClass)
                 .AsImplementedInterfaces().InstancePerLifetimeScope();
-             _builder=builder;
+            _builder = builder;
             _container = builder.Build();
             return builder;
-        }      
+        }
 
         /// <summary>
-        /// 注册一个单例实体
+        /// 注册一个单例实体.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="instance"></param>
-        public static void Register<T>(T instance) where T : class
+        /// <typeparam name="T">类对象.</typeparam>
+        /// <param name="instance">实例对象.</param>
+        public static void Register<T>(T instance)
+            where T : class
         {
             _builder.RegisterInstance(instance).SingleInstance();
         }
+
+        /// <summary>
+        /// 注册.
+        /// </summary>
+        /// <typeparam name="TClass"></typeparam>
+        /// <typeparam name="TInterface"></typeparam>
         public static void Register<TClass,TInterface>() 
         {
-            _builder.RegisterType<TClass>().As<TInterface>();           
+            _builder.RegisterType<TClass>().As<TInterface>();
         }
+
         /// <summary>
         ///
         /// </summary>

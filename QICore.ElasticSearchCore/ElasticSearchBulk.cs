@@ -9,6 +9,8 @@ namespace QICore.ElasticSearchCore
 {
     public class ElasticSearchBulk
     {
+        private const string Format = "BulkHotelGeo Error : {0}";
+
         public static bool CreateIndex<T>(IElasticClient elasticClient, string indexName) where T : class
         {
             var existsResponse = elasticClient.Indices.Exists(indexName);
@@ -22,9 +24,9 @@ namespace QICore.ElasticSearchCore
             {
                 Settings = new IndexSettings
                 {
-                    NumberOfReplicas = 1,//副本数
-                    NumberOfShards = 6//分片数
-                }
+                    NumberOfReplicas = 1, // 副本数
+                    NumberOfShards = 6, // 分片数
+                },
             };
 
             CreateIndexResponse response = elasticClient.Indices.Create(indexName, p => p
@@ -33,16 +35,29 @@ namespace QICore.ElasticSearchCore
 
             return response.IsValid;
         }
+
+        /// <summary>
+        /// ElasticClient.
+        /// </summary>
+        /// <returns>返回ElasticClient</returns>
         public static ElasticClient GetElasticClient()
         {
             var client = new ElasticClient();
             return client;
         }
+
+        /// <summary>
+        /// 批量插入.
+        /// </summary>
+        /// <typeparam name="T">对象.</typeparam>
+        /// <param name="elasticClient">IElasticClient.</param>
+        /// <param name="indexName">索引名称.</param>
+        /// <param name="list">对象列表.</param>
+        /// <returns>返回成功或失败.</returns>
         public static bool BulkAll<T>(IElasticClient elasticClient, IndexName indexName, IEnumerable<T> list) where T : class
         {
             const int size = 1000;
             var tokenSource = new CancellationTokenSource();
-
             var observableBulk = elasticClient.BulkAll(list, f => f
                     .MaxDegreeOfParallelism(8)
                     .BackOffTime(TimeSpan.FromSeconds(10))
@@ -74,7 +89,7 @@ namespace QICore.ElasticSearchCore
                     exception = ex;
                     countdownEvent.Signal();
                 },
-                OnCompleted);
+                onCompleted: OnCompleted);
 
             observableBulk.Subscribe(bulkAllObserver);
 
@@ -82,7 +97,7 @@ namespace QICore.ElasticSearchCore
 
             if (exception != null)
             {
-                WriteLine("BulkHotelGeo Error : {0}", exception);
+                WriteLine(format: Format, arg0: exception);
                 return false;
             }
             else
