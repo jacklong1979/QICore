@@ -1,8 +1,8 @@
 ﻿
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Nest;
 using static System.Console;
 
 namespace QICore.ElasticSearchCore
@@ -54,7 +54,8 @@ namespace QICore.ElasticSearchCore
         /// <param name="indexName">索引名称.</param>
         /// <param name="list">对象列表.</param>
         /// <returns>返回成功或失败.</returns>
-        public static bool BulkAll<T>(IElasticClient elasticClient, IndexName indexName, IEnumerable<T> list) where T : class
+        public static bool BulkAll<T>(IElasticClient elasticClient, IndexName indexName, IEnumerable<T> list)
+            where T : class
         {
             const int size = 1000;
             var tokenSource = new CancellationTokenSource();
@@ -97,7 +98,7 @@ namespace QICore.ElasticSearchCore
 
             if (exception != null)
             {
-                WriteLine(format: Format, arg0: exception);
+                WriteLine(Format, arg0: exception);
                 return false;
             }
             else

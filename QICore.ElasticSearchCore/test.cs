@@ -4,10 +4,11 @@ using System.Text;
 
 namespace QICore.ElasticSearchCore
 {
-   public  class test
+   public class Test
     {
-        static IFunction1 s = AutofacIoc.Resolve<IFunction1>();
-        public static void write()
+        private static IFunction1 s = AutofacIoc.Resolve<IFunction1>();
+
+        public static void Write()
         {
             Console.WriteLine(s.GetName());
         }
