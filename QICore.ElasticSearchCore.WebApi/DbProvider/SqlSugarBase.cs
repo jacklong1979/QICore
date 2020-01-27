@@ -1,7 +1,8 @@
-﻿using SqlSugar;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Dapper;
+using SqlSugar;
 
 namespace QICore.ElasticSearchCore.WebApi.DbProvider
 {
@@ -11,6 +12,9 @@ namespace QICore.ElasticSearchCore.WebApi.DbProvider
     public class SqlSugarBase
     {
         public static string ConnectionString { get; set; }
+        /// <summary>
+        /// SqlSugarClient.
+        /// </summary>
         public static SqlSugarClient DbContext
         {
             get => new SqlSugarClient(new ConnectionConfig()
@@ -22,6 +26,22 @@ namespace QICore.ElasticSearchCore.WebApi.DbProvider
                 IsShardSameThread = true////默认SystemTable, 字段信息读取, 如：该属性是不是主键，是不是标识列等等信息
             }
             );
+        }
+
+        /// <summary>
+        /// MySqlConnection.
+        /// </summary>
+        public static MySql.Data.MySqlClient.MySqlConnection DbConnection
+        {
+            get
+            {
+                MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection(ConnectionString);
+                if (conn.State == System.Data.ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+                return conn;
+            }
         }
     }
 }

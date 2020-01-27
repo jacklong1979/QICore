@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using QICore.ElasticSearchCore.WebApi.DbProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,13 @@ namespace QICore.ElasticSearchCore.WebApi.OptionModel
         public static void AddOptions(this IServiceCollection services, IConfiguration configuration)
         {
             // 添加服务设置实例配置
-            ////将appsettings.json中的 ConnectionStrings 部分文件读取到 ConnectionStrings 中，这是给其他地方用的
-            //services.Configure<ConnectionStringOption>(Configuration.GetSection("ConnectionStrings"));
-            ////如果初始化的时候我们就需要用，使用Bind的方式读取配置
-            ////将配置绑定到 ConnectionStrings 实例中
-            //var connectionStringOption = new ConnectionStringOption();
-            //Configuration.Bind("ConnectionStrings", connectionStringOption);
+            //将appsettings.json中的 ConnectionStrings 部分文件读取到 ConnectionStrings 中，这是给其他地方用的
             services.Configure<ConnectionStringOption>(configuration.GetSection("ConnectionStrings"));
+            //如果初始化的时候我们就需要用，使用Bind的方式读取配置
+            //将配置绑定到 ConnectionStrings 实例中
+            var connectionStringOption = new ConnectionStringOption();
+            configuration.Bind("ConnectionStrings", connectionStringOption);
+            SqlSugarBase.ConnectionString = connectionStringOption.MySqlConnectionStrings;//数据库连接字符串
         }
     }
 }

@@ -17,8 +17,16 @@ namespace QICore.ElasticSearchCore.WebApi.Common
             //builder.RegisterAssemblyTypes(GetAssemblyByName("BlogService")).Where(a => a.Name.EndsWith("Service")).AsImplementedInterfaces();
             //builder.RegisterAssemblyTypes(GetAssemblyByName("BlogRepository")).Where(a => a.Name.EndsWith("Repository")).AsImplementedInterfaces();
             //单一注册
-           //   builder.RegisterType<PersonService>().Named<IPersonService>(typeof(PersonService).Name);
-            builder.RegisterType<Test>().As<ITest>();
+            //   builder.RegisterType<PersonService>().Named<IPersonService>(typeof(PersonService).Name);
+
+          
+            Type basetype = typeof(IBase);
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .Where(t => basetype.IsAssignableFrom(t) && t.IsClass)
+                .AsImplementedInterfaces().InstancePerLifetimeScope();
+           
+
+            //builder.RegisterType<Test>().As<ITest>();
         }
         /// <summary>
         /// 根据程序集名称获取程序集
