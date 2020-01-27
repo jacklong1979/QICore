@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using QICore.ElasticSearchCore.WebApi.Dao;
+using QICore.ElasticSearchCore.WebApi.OptionModel;
 
 namespace QICore.ElasticSearchCore.WebApi.Controllers
 {
@@ -13,7 +15,7 @@ namespace QICore.ElasticSearchCore.WebApi.Controllers
     public class WeatherForecastController : ControllerBase
     {
         public ITest _test;
-      
+        private readonly IOptions<ConnectionStringOption> _connStrings;
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -21,10 +23,11 @@ namespace QICore.ElasticSearchCore.WebApi.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ITest test,ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ITest test, IOptions<ConnectionStringOption>  conn,ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
             _test = test;
+            _connStrings = conn;
         }
 
         [HttpGet]
@@ -43,7 +46,7 @@ namespace QICore.ElasticSearchCore.WebApi.Controllers
         public OkObjectResult Test(string name)
         {
             var str = _test.GetTest(name);
-            return Ok(new { Name=str});
+            return Ok(new { Name=str, MySqlConnectionStrings = _connStrings .Value.MySqlConnectionStrings});
         }
     }
 }

@@ -3,3 +3,13 @@
 ################################################################################
 
 /QICore.ElasticSearchCore/.vs
+/QICore.ElasticSearchCore/obj
+/QICore.ElasticSearchCore/.editorconfig
+/QICore.ElasticSearchCore.WebApi/bin/Debug/netcoreapp3.1
+/QICore.ElasticSearchCore.WebApi/obj
+/QICore.ElasticSearchCore.WebApi/Properties
+/QICore.QuartzCore/.vs/QICore.QuartzCore/v16
+/QICore.QuartzCore/QICore.QuartzCore/bin/Debug/netcoreapp2.2
+/QICore.QuartzCore/QICore.QuartzCore/obj/Debug/netcoreapp2.2
+/QICore.QuartzCore/QICore.QuartzCore/obj
+*.zip

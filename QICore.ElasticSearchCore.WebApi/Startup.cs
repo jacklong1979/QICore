@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QICore.ElasticSearchCore.WebApi.Common;
 using QICore.ElasticSearchCore.WebApi.Dao;
+using QICore.ElasticSearchCore.WebApi.OptionModel;
 using System;
 using System.Reflection;
 
@@ -38,9 +39,7 @@ namespace QICore.ElasticSearchCore.WebApi
         /// <param name="services">IServiceCollection.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-           //  AutofacIoc.Register();
-
-
+          
             #region Autofac
 
             //返回的void 修改为 IServiceProvider 这是为了让第三方Ioc容易接管通道 具体在第几层怎么实现我没有深入研究  
@@ -50,7 +49,7 @@ namespace QICore.ElasticSearchCore.WebApi
             //builder.RegisterModule<Base>();//使用Module 重写的方式配置 就不需要每次都来修改Startup文件了。后期打算改成json的。
             ////builder.RegisterType<AutofaceTest.Service.Service.UserService>().As<Service.Interface.IUserService>();//UserService注入到IUserService
             //ApplicationContainer = builder.Build();//IUserService UserService 构造
-           
+
             //return new AutofacServiceProvider(ApplicationContainer);//将autofac反馈到管道中
 
             //var builder = new ContainerBuilder();//实例化 AutoFac  容器 
@@ -62,6 +61,7 @@ namespace QICore.ElasticSearchCore.WebApi
             //var _container = builder.Build();
 
             #endregion
+            services.AddOptions(Configuration);//读取配置文件           
             services.AddControllers();
         }
 
