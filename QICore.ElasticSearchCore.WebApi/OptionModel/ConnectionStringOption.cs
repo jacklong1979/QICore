@@ -9,6 +9,6 @@ namespace QICore.ElasticSearchCore.WebApi.OptionModel
     {       
         public string MySqlConnectionStrings { get; set; }
         public string SqlServerConnectionStrings { get; set; }
-        public string Redis { get; set; }    
+        public string ESWizplantUrl { get; set; }    
     }
 }

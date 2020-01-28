@@ -26,6 +26,7 @@ namespace QICore.ElasticSearchCore.WebApi
             JArray rows = (JArray)JsonConvert.DeserializeObject(json);
             return rows;
         }
+       
         /// <summary>
         /// 对象列表转成JArray
         /// </summary>

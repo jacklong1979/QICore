@@ -18,51 +18,74 @@ namespace QICore.ElasticSearchCore.WebApi.Dao
         public List<ElasticModel> GetTagList(int pageIndex=1, int pageSize=10)
         {
             List<ElasticModel> list = new List<ElasticModel>();
-            //using (var db = DbConnection)
-            //{
-            //    var sql = $"select * from tag ";
-            //    var dataList = db.QueryList<object>(sql,pageIndex,pageSize);
-            //    var jarryRows=dataList.ToJArray();
-
-            //    foreach (var row in jarryRows)
-            //    {
-            //        var model = new ElasticModel();
-            //        //var value = row.Find("Name");//查询某列的值 
-            //        model.Name= row.Find("Name")?.ToString();
-            //        list.Add(model);
-            //    }              
-            //}
-
-            using (var db = DbContext)
+            using (var db = DbConnection)
             {
-
-                var tagList = db.Queryable<Tag>().ToPageList(pageIndex, pageSize);
-                if (tagList != null && tagList.Count > 0)
+                var sql = $@"select b.name ClassName, a.* from tag a
+                                    left join tagclass b on b.id = a.ClassID and b.`Status`= 0
+                                    where a.`Status`= 0  ";
+                var tagList = db.QueryList<Tag>(sql, pageIndex, pageSize);
+                if (tagList != null && tagList.Count() > 0)
                 {
-                    foreach (var ent in tagList)
-                    {
-                        var model = new ElasticModel();
-                        model.Id = ent.Id;
-                        model.SiteId = ent.SiteId;
-                        // model.ClassID = ent.;
-                        model.ParentId = ent.ParentId;
-                        model.NameSpace = ent.NameSpace;
-                        model.Code = ent.Code;
-                        model.Name = ent.Name;
-                        //model.ShortDescription = ent.ShortDescription;
-                        //model.LongDescription = ent.LongDescription;
-                        model.Flag = ent.Flag;
-                        model.Version = ent.Version;
-                        model.Status = ent.Status;
-                        model.CreatedTime = ent.CreatedTime;
-                        model.CreatedUser = ent.CreatedUser;
-                        model.LastModifiedTime = ent.LastModifiedTime;
-                        model.LastModifiedUser = ent.LastModifiedUser;
-                        list.Add(model);
-
-                    }
+                    var tagids = tagList.Select(c => c.Id).ToList();
+                    #region 位号关联的文件
+                     sql = $@"select  c.* from  tagfileassociation a
+                            inner join tag b on b.id = a.tagid
+                            inner join documentfile c on c.id = a.fileid
+                            where a.`Status`= 0 and b.`Status`= 0 and c.`Status`= 0
+                            and a.tagid in @tagids";
+                    var fileList = db.Query<object>(sql, new { tagids = tagids });
+                    #endregion
                 }
+                //var jarryRows = dataList.ToJArray();
+
+                //foreach (var row in jarryRows)
+                //{
+                //    var model = new ElasticModel();
+                //    var value = row.Find("Name");//查询某列的值 
+                //    model.Name = row.Find("Name")?.ToString();
+                //    list.Add(model);
+                //}
+
             }
+
+            //using (var db = DbContext)
+            //{
+            //    var tagList = db.Queryable<Tag>().ToPageList(pageIndex, pageSize);
+            //    if (tagList != null && tagList.Count > 0)
+            //    {
+            //        var tagids = tagList.Select(c => c.Id).ToList();
+            //        #region 位号关联的文件
+            //        var sql = $@"select  c.* from  tagfileassociation a
+            //                inner join tag b on b.id = a.tagid
+            //                inner join documentfile c on c.id = a.fileid
+            //                where a.`Status`= 0 and b.`Status`= 0 and c.`Status`= 0
+            //                and a.tagid in @tagids";
+            //        var fileList = db.Ado.SqlQuery<object>(sql, new { tagids = tagids });
+            //        #endregion
+            //        foreach (var ent in tagList)
+            //        {
+            //            var model = new ElasticModel();
+            //            model.Id = ent.Id;
+            //            model.SiteId = ent.SiteId;
+            //            // model.ClassID = ent.;
+            //            model.ParentId = ent.ParentId;
+            //            model.NameSpace = ent.NameSpace;
+            //            model.Code = ent.Code;
+            //            model.Name = ent.Name;
+            //            //model.ShortDescription = ent.ShortDescription;
+            //            //model.LongDescription = ent.LongDescription;
+            //            model.Flag = ent.Flag;
+            //            model.Version = ent.Version;
+            //            model.Status = ent.Status;
+            //            model.CreatedTime = ent.CreatedTime;
+            //            model.CreatedUser = ent.CreatedUser;
+            //            model.LastModifiedTime = ent.LastModifiedTime;
+            //            model.LastModifiedUser = ent.LastModifiedUser;
+            //            list.Add(model);
+
+            //        }
+            //    }               
+            //}
             return list;
         }
     }
