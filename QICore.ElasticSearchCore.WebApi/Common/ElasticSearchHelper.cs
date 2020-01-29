@@ -12,7 +12,6 @@ namespace QICore.ElasticSearchCore.WebApi.Common
         /// <summary>
         /// 如果同名索引不存在则创建索引
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="client">ElasticClient实例</param>
         /// <param name="indexName">要创建的索引名称</param>
         /// <param name="numberOfReplicas">默认副本数量，如果是单实例，注意改成0</param>

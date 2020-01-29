@@ -28,9 +28,23 @@ namespace QICore.ElasticSearchCore.WebApi.Models
         public string CreatedUserName { get; set; }
         public string LastModifiedUser { get; set; }
         public string LastModifiedUserName { get; set; }
+        public string ShortDescription { get; set; }
+        public string LongDescription { get; set; }
+        /// <summary>
+        /// 属性json对象
+        /// </summary>
         public List<object> Attributes { get; set; }
-        public List<object> Files { get; set; }
+        /// <summary>
+        /// 关联文件json对象
+        /// </summary>
+        public List<DocumentFile> Files { get; set; }
+        /// <summary>
+        ///关联位号json对象
+        /// </summary>
         public List<object> Tags { get; set; }
+        /// <summary>
+        /// 关联文档json对象
+        /// </summary>
         public List<object> Docs { get; set; }
     }
 }

@@ -23,17 +23,28 @@ namespace QICore.ElasticSearchCore.WebApi.Dao
                 var sql = $@"select b.name ClassName, a.* from tag a
                                     left join tagclass b on b.id = a.ClassID and b.`Status`= 0
                                     where a.`Status`= 0  ";
-                var tagList = db.QueryList<Tag>(sql, pageIndex, pageSize);
-                if (tagList != null && tagList.Count() > 0)
+                 list = db.QueryList<ElasticModel>(sql, pageIndex, pageSize).ToList();
+                if (list != null && list.Count> 0)
                 {
-                    var tagids = tagList.Select(c => c.Id).ToList();
+                    var tagids = list.Select(c => c.Id).ToList();
                     #region 位号关联的文件
-                     sql = $@"select  c.* from  tagfileassociation a
+                     sql = $@"select a.fileid,a.tagid, c.* from  tagfileassociation a
                             inner join tag b on b.id = a.tagid
                             inner join documentfile c on c.id = a.fileid
                             where a.`Status`= 0 and b.`Status`= 0 and c.`Status`= 0
                             and a.tagid in @tagids";
-                    var fileList = db.Query<object>(sql, new { tagids = tagids });
+                    var fileList = db.Query<DocumentFile>(sql, new { tagids = tagids });
+                    if (fileList != null && fileList.Count() > 0)
+                    {
+                        foreach (var ent in list)
+                        {
+                            var files = fileList.Where(c => c.TagId == ent.Id).ToList();
+                            if (files != null && files.Count > 0)
+                            {
+                                ent.Files = files;
+                            }
+                        }
+                    }
                     #endregion
                 }
                 //var jarryRows = dataList.ToJArray();

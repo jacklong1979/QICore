@@ -26,7 +26,24 @@ namespace QICore.ElasticSearchCore.WebApi
             JArray rows = (JArray)JsonConvert.DeserializeObject(json);
             return rows;
         }
-       
+        /// <summary>
+        /// 对象列表转
+        /// </summary>
+        /// <typeparam name="S"></typeparam>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objList"></param>
+        /// <returns></returns>
+        public static List<T> ToList<S,T>(this List<S> objList) 
+        {
+            string json = JsonConvert.SerializeObject(objList);
+            var rows = JsonConvert.DeserializeObject<List<T>>(json);
+            return rows;
+        }
+        public static string SerializeObject<T>(this T obj)
+        {
+            string json = JsonConvert.SerializeObject(obj);            
+            return json;
+        }
         /// <summary>
         /// 对象列表转成JArray
         /// </summary>
