@@ -17,7 +17,6 @@ namespace QICore.ElasticSearchCore.WebApi
         {
             CreateHostBuilder(args).Build().Run();
         }
-
         /// <summary>
         /// ËõÖ÷Æô¶¯.
         /// </summary>
