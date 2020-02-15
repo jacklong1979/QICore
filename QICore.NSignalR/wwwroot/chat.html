@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>简单聊天</title>
+    <link href="lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <form>
+        <div class="form-group">
+            <label for="username">用户名:</label>
+            <input type="text" class="form-control" id="username" name="username">
+        </div>
+        <div class="form-group">
+            <label for="password">密码:</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <input type="button" onclick="btnLogin()" value="提交">
+    </form>
+    <div class="container ">
+        <div id="myAlert" class="alert alert-info">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Hi!</strong>欢迎来到简单聊天室。
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><a href="#">聊天板</a> </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="pre-scrollable">
+                            <ul id="messagesList" style="height:340px"></ul>
+                        </div>
+
+                    </div>
+                    <div class="panel-footer">
+                        <input type="text" id="userName" placeholder="用户名" />
+                        <input type="text" id="message" name="message" value="" placeholder="在此输入需要发送的消息" />
+                        <button class="btn btn-info navbar-btn" type="button" id="sendBtn">发送</button>
+                        <input type="text" id="groupName" placeholder="组名" />
+                        <button class="btn btn-info navbar-btn" type="button" id="joinGroup">加入组</button>
+                        <button class="btn btn-info navbar-btn" type="button" id="sendGroupBtn">发送组信息</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="lib/signalr/signalr.js"></script>
+    <script type="text/javascript">
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("api/hub")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+        connection.start().then(function () {
+            console.log("连接成功");
+        }).catch(function (ex) {
+            console.log("连接失败" + ex);
+            //SignalR JavaScript 客户端不会自动重新连接，必须编写代码将手动重新连接你的客户端
+            setTimeout(() => start(), 5000);
+        });
+        //定义方法使用connection.on方法来接收返回数据
+        connection.on("ReceiveAllMessage", (user, message) => {
+            const encodedMsg = user + " 说：" + message;
+            const li = document.createElement("li");
+            li.textContent = encodedMsg;
+            document.getElementById("messagesList").appendChild(li);
+        });
+        //发送所有人
+        document.getElementById("sendBtn").addEventListener("click", function () {
+            var user = document.getElementById('userName').value;
+            var message = document.getElementById('message').value;
+            //从客户端中调用在此调用之前在自定义Hub定义的SendMessage方法
+            connection.invoke("SendAll", user, message).catch(err => console.error(err.toString()));
+        });
+
+
+
+        //定义方法使用connection.on方法来接收返回数据 发送组信息
+        connection.on("ReceiveMessage", (user, message) => {
+            const encodedMsg = user + " 说：" + message;
+            const li = document.createElement("li");
+            li.textContent = encodedMsg;
+            document.getElementById("messagesList").appendChild(li);
+        });
+        //加入组
+        document.getElementById("joinGroup").addEventListener("click", function () {
+            var groupName = document.getElementById('groupName').value;
+            //从客户端中调用在此调用之前在自定义Hub定义的SendMessage方法
+            connection.invoke("JoinGroup", groupName).catch(err => console.error(err.toString()));
+        });
+        //发送组信息
+        document.getElementById("sendGroupBtn").addEventListener("click", function () {
+
+            var groupName = document.getElementById('groupName').value;
+            var message = document.getElementById('message').value;
+            //$.get('/api/values/SendOnly/' + user + '/' + message, function (result) {
+            //    alert(result.message);
+            //});
+          
+            //从客户端中调用在此调用之前在自定义Hub定义的SendMessage方法
+            connection.invoke("SendGroup", groupName, message).catch(err => console.error(err.toString()));
+        });
+        async function start() {
+            try {
+                await signalr_connection.start();
+                console.log("连接中.....");
+            } catch (err) {
+                console.log(err);
+                setTimeout(() => start(), 5000);
+            }
+        };
+        function btnLogin() {
+            var name = $.trim($("#username").val());
+            var pwd = $.trim($("#password").val());
+
+            if (name == "") {
+                alert("用户名不能为空");
+            }
+            else if (pwd == "") {
+                alert("密码不能为空");
+            }
+            else {
+                var params = {};
+                params.username = name;
+                params.userpwd = pwd;
+
+                $.ajax({
+                    url: '/api/values/Login',
+                    type: 'post',
+                    data: params,
+                    dataType: 'json',
+                    async: true,
+                    error: function () {
+                        alert('登陆失败！');
+                    },
+                    success: function (data) {
+                        if (data.code == 'success') {
+                            alert('登陆成功' + data.userid);
+                            //window.location.href = '/';
+                        }
+                        else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
