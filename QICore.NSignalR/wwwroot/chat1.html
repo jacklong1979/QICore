@@ -5,18 +5,7 @@
     <title>简单聊天</title>
     <link href="lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 </head>
-<body>
-    <form>
-        <div class="form-group">
-            <label for="username">用户名:</label>
-            <input type="text" class="form-control" id="username" name="username">
-        </div>
-        <div class="form-group">
-            <label for="password">密码:</label>
-            <input type="password" class="form-control" id="password" name="password">
-        </div>
-        <input type="button" onclick="btnLogin()" value="提交">
-    </form>
+<body>   
     <div class="container ">
         <div id="myAlert" class="alert alert-info">
             <a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -35,12 +24,14 @@
 
                     </div>
                     <div class="panel-footer">
-                        <input type="text" id="userName" placeholder="用户名" />
-                        <input type="text" id="message" name="message" value="" placeholder="在此输入需要发送的消息" />
-                        <button class="btn btn-info navbar-btn" type="button" id="sendBtn">发送</button>
-                        <input type="text" id="groupName" placeholder="组名" />
-                        <button class="btn btn-info navbar-btn" type="button" id="joinGroup">加入组</button>
+                        <input type="text" id="userId" placeholder="用户Id" /><br />
+                        <input type="text" id="userName" placeholder="用户名" /><br />
+                        <button class="btn btn-info navbar-btn" type="button" id="joinGroup">初始化用户</button><br />
+                        <input type="text" id="message" name="message" value="" placeholder="在此输入需要发送的消息" /><br />
+                        <input type="text" id="receiveId" placeholder="接收用户名Id" /><br />
                         <button class="btn btn-info navbar-btn" type="button" id="sendGroupBtn">发送组信息</button>
+                        <button class="btn btn-info navbar-btn" type="button" id="sendBtn">发送通知（所有人接收）</button>
+
                     </div>
                 </div>
             </div>
@@ -53,7 +44,7 @@
     <script src="lib/signalr/signalr.js"></script>
     <script type="text/javascript">
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://127.0.0.1:60647/api/hub")
+            .withUrl("http://127.0.0.1:60647/api/hub?userid=aaaaaaaaaa")
             .configureLogging(signalR.LogLevel.Information)
             .build();
         connection.start().then(function () {
@@ -81,29 +72,27 @@
 
 
         //定义方法使用connection.on方法来接收返回数据 发送组信息
-        connection.on("ReceiveMessage", (user, message) => {
-            const encodedMsg = user + " 说：" + message;
+        connection.on("receiveMessage", (msg) => {
+            debugger;
+            const encodedMsg = msg.senderName + " 说：" + msg.message;
             const li = document.createElement("li");
             li.textContent = encodedMsg;
             document.getElementById("messagesList").appendChild(li);
         });
-        //加入组
+        //初始化用户
         document.getElementById("joinGroup").addEventListener("click", function () {
-            var groupName = document.getElementById('groupName').value;
-            //从客户端中调用在此调用之前在自定义Hub定义的SendMessage方法
-            connection.invoke("JoinGroup", groupName).catch(err => console.error(err.toString()));
+            var userId = document.getElementById('userId').value;
+            var userName = document.getElementById('userName').value;
+            connection.invoke("InitUser", userId, userName).catch(err => console.error(err.toString()));
         });
         //发送组信息
         document.getElementById("sendGroupBtn").addEventListener("click", function () {
 
-            var groupName = document.getElementById('groupName').value;
-            var message = document.getElementById('message').value;
-            //$.get('/api/values/SendOnly/' + user + '/' + message, function (result) {
-            //    alert(result.message);
-            //});
-          
-            //从客户端中调用在此调用之前在自定义Hub定义的SendMessage方法
-            connection.invoke("SendGroup", groupName, message).catch(err => console.error(err.toString()));
+            var senderId = document.getElementById('userId').value;
+            var receiveId = document.getElementById('receiveId').value;
+            var message = document.getElementById('message').value;          
+            //从客户端中调用在此调用之前在自定义Hub定义的SendUser方法  SendUser(string senderId,string receiveId, string message)
+            connection.invoke("SendUser", senderId, receiveId, message).catch(err => console.error(err.toString()));
         });
         async function start() {
             try {
@@ -114,42 +103,7 @@
                 setTimeout(() => start(), 5000);
             }
         };
-        function btnLogin() {
-            var name = $.trim($("#username").val());
-            var pwd = $.trim($("#password").val());
-
-            if (name == "") {
-                alert("用户名不能为空");
-            }
-            else if (pwd == "") {
-                alert("密码不能为空");
-            }
-            else {
-                var params = {};
-                params.username = name;
-                params.userpwd = pwd;
-
-                $.ajax({
-                    url: '/api/values/Login',
-                    type: 'post',
-                    data: params,
-                    dataType: 'json',
-                    async: true,
-                    error: function () {
-                        alert('登陆失败！');
-                    },
-                    success: function (data) {
-                        if (data.code == 'success') {
-                            alert('登陆成功' + data.userid);
-                            //window.location.href = '/';
-                        }
-                        else {
-                            alert(data.msg);
-                        }
-                    }
-                });
-            }
-        }
+ 
     </script>
 </body>
 </html>

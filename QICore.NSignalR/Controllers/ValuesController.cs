@@ -26,7 +26,7 @@ namespace QICore.NSignalR.Controllers
         public IEnumerable<string> Get()
         {
             string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+            
             return new string[] { "value1", "value2" };
         }
 

@@ -38,7 +38,7 @@ namespace QICore.NSignalR
             });
             services.AddCors(op =>
             {
-                op.AddPolicy("SignalR", set =>
+                op.AddPolicy("default", set =>
                 {
                     set.SetIsOriginAllowed(origin => true)
                        .AllowAnyHeader()
@@ -75,7 +75,7 @@ namespace QICore.NSignalR
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors("SignalR");
+            app.UseCors("default");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

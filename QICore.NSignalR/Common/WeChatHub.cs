@@ -9,7 +9,32 @@ namespace QICore.NSignalR.Common
 {
     public class WeChatHub:Hub
     {
-       
+        public static Dictionary<string, ChatModel> HubList = new Dictionary<string, ChatModel>();
+        public async Task InitUser(string userid, string username)
+        {
+           var connectionId= this.Context.ConnectionId;
+            if (!HubList.ContainsKey(userid))
+            {
+                var user = new ChatModel() { UserId = userid, UserName = username, ConnectionId = connectionId, GroupNameList = new List<string>() };
+                if (!user.GroupNameList.Contains(userid))
+                {
+                    user.GroupNameList.Add(userid);
+                }
+                HubList.Add(userid, user);
+            }
+            else
+            {
+                var user = HubList[userid] as ChatModel;
+                user.ConnectionId = connectionId;
+                if (!user.GroupNameList.Contains(userid))
+                {
+                    user.GroupNameList.Add(userid);
+                }
+                HubList[userid] = user;
+            }
+            Console.WriteLine($"{userid} 组：{connectionId}");
+            await AddGroup(connectionId, userid);
+        }
         /// <summary>
         /// 发送消息
         /// </summary>
@@ -28,9 +53,40 @@ namespace QICore.NSignalR.Common
         }
 
         //发送消息--发送给指定组
-        public async Task SendGroup(string groupName, string message)
+        public async Task SendUser(string senderId,string receiveId, string message)
         {
-            await Clients.Group(groupName).SendAsync("ReceiveMessage", $"{Context.ConnectionId}@{groupName}",$"{message}");
+            var senderName = string.Empty;
+            var receiveName= string.Empty;
+            #region 发送人
+            if (HubList.ContainsKey(senderId))
+            {
+                var user = HubList[senderId] as ChatModel;
+                var connectionId = user.ConnectionId;
+                if (!user.GroupNameList.Contains(senderId))
+                {
+                    user.GroupNameList.Add(senderId);
+                }
+                senderName = user.UserName;
+                Console.WriteLine($"发送消息{senderId} 组：{connectionId}");
+                await AddGroup(connectionId, receiveId);//【接收人】加入【发送人】的组
+            }
+            #endregion
+            #region 发送人
+            if (HubList.ContainsKey(receiveId))
+            {
+                var user = HubList[receiveId] as ChatModel;
+                var connectionId = user.ConnectionId;
+                if (!user.GroupNameList.Contains(receiveId))
+                {
+                    user.GroupNameList.Add(receiveId);
+                }
+                receiveName = user.UserName;
+                Console.WriteLine($"发送消息{senderId} 组：{connectionId}");
+                await AddGroup(connectionId, senderId);//【发送人】加入【接收人】的组
+            }
+            #endregion
+            var msg = new {senderId= senderId, senderName= senderName, receiveId = receiveId, receiveName= receiveName,message = message };
+            await Clients.Group(receiveId).SendAsync("ReceiveMessage", msg);
 
         }
         /// <summary>
@@ -42,6 +98,10 @@ namespace QICore.NSignalR.Common
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("ReceiveMessage", $"{Context.ConnectionId}",$"我加入了:[{groupName}]组");
+        }
+        public async Task AddGroup(string connectionId,string groupName)
+        {
+            await Groups.AddToGroupAsync(connectionId, groupName);
         }
         /// <summary>
         /// 退出指定组并向组推送消息
@@ -65,9 +125,11 @@ namespace QICore.NSignalR.Common
         }
         public override Task OnConnectedAsync()
         {
+            var userid = Context.GetHttpContext().Request.Query["userid"].ToString();
+            var id = Context.GetHttpContext().Request.Query["id"].ToString();
             //var version = Context.QueryString["contosochatversion"];
             Console.WriteLine("哇，有人进来了：{0}", this.Context.ConnectionId);
-            var id = this.Context.ConnectionId;
+           // var id = this.Context.ConnectionId;
             ////添加用户登录
             //this.Context.User.AddIdentity();
             ////获取用户登录
@@ -114,16 +176,18 @@ namespace QICore.NSignalR.Common
         }
         
     }
-    public class MessageBody
-    {
-        public int Type { get; set; }
-        public string UserName { get; set; }
-        public string Content { get; set; }
-    }
+   
     public class SignalRModel
     {
         public static Dictionary<string, SignalRStatus> StaticList = new Dictionary<string, SignalRStatus>();
         public static Dictionary<string, string> SignalRList { get; set; } = new Dictionary<string, string>();
+    }
+    public class ChatModel
+    {
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string ConnectionId { get; set; }
+        public List<string> GroupNameList { get; set; }
     }
     public enum SignalRStatus
     {
