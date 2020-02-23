@@ -49,21 +49,21 @@ namespace QICore.NSignalR
             services.AddMvc();
             services.AddSignalR();
             #region 配置authorrize登录验证
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/api/values/Login";
-                options.Cookie.Name = "AspnetcoreSessionId";
-                options.Cookie.Path = "/"; //cookie所在的目录，asp.net默认为"/"，就是根目录
-                options.Cookie.HttpOnly = true; //设置了HttpOnly属性，js脚本将无法读取到cookie信息，能有效的防止XSS攻击窃取cookie内容，增加cookie的安全性
-                options.Cookie.Expiration = new TimeSpan(8, 0, 0); //cookie过期时间
-                options.ExpireTimeSpan = new TimeSpan(8, 0, 0);
-            });
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //})
+            //.AddCookie(options =>
+            //{
+            //    options.LoginPath = "/api/values/Login";
+            //    options.Cookie.Name = "AspnetcoreSessionId";
+            //    options.Cookie.Path = "/"; //cookie所在的目录，asp.net默认为"/"，就是根目录
+            //    options.Cookie.HttpOnly = true; //设置了HttpOnly属性，js脚本将无法读取到cookie信息，能有效的防止XSS攻击窃取cookie内容，增加cookie的安全性
+            //    options.Cookie.Expiration = new TimeSpan(8, 0, 0); //cookie过期时间
+            //    options.ExpireTimeSpan = new TimeSpan(8, 0, 0);
+            //});
             #endregion
             
         }
@@ -83,7 +83,10 @@ namespace QICore.NSignalR
             //该中间件一定要放在app.UseMvc前面，否则HttpContext.User.Identity.IsAuthenticated一直为false。
             app.UseAuthentication();
 
-            app.UseSignalR(routes => { routes.MapHub<WeChatHub>("/api/hub"); });
+            app.UseSignalR(routes => {
+                routes.MapHub<WeChatHub>("/api/hub");
+                routes.MapHub<ChatHub>("/api/chathub");
+            });
             app.UseMvc();
         }
     }

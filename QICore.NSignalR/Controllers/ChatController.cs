@@ -9,29 +9,19 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using QICore.NSignalR.Common;
-
+using System.IO;
 namespace QICore.NSignalR.Controllers
 {
     
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class ChatController : Controller
     {
-        private readonly IHubContext<WeChatHub> _hub;
+        private readonly IHubContext<ChatHub> _hub;
       
-        public ValuesController(IHubContext<WeChatHub> hubContext)
+        public ChatController(IHubContext<ChatHub> hubContext)
         {
             _hub = hubContext;
         }
-
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
-            return new string[] { "value1", "value2" };
-        }
-
         /// <summary>
         /// 登录
         /// </summary>
@@ -84,35 +74,44 @@ namespace QICore.NSignalR.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
             return Json(new { code = "success", msg = "登陆成功", userid = userid });
         }
-        /// <summary>
-        /// 登出
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IActionResult> logOff()
-        {
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            }
-            return Redirect("/Home/Index");
-        }
+       
         [HttpGet("SendAll")]
         public async Task<IActionResult> SendAll(string userId, string message)
         {
              await _hub.Clients.All.SendAsync("ReceiveAllMessage", userId, message);
             return Ok("推送全部人");
         }
-        [HttpGet("SendOnly/{userId}/{message}")]
-        public async Task<IActionResult> SendOnly(string userId, string message)
+        [HttpPost("senduser")]
+        public async Task<IActionResult> SendUser()
         {
-            var claimNameIdentifier = User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(claimNameIdentifier))
+            var online = ChatHub.OnlineClients;
+            Message msg = new Message();
+            msg.SenderId = Request.Form["senderId"].ToString();
+            msg.SenderName = Request.Form["senderName"].ToString();
+            msg.ReceiveId = Request.Form["receiveId"].ToString();
+            msg.ReceiveName = Request.Form["receiveName"].ToString();
+            msg.Msg = Request.Form["msg"].ToString();
+            msg.MsgType =int.Parse(Request.Form["msgType"].ToString());
+            var senderClient = ChatHub.OnlineClients.Where(x => x.Key == msg.SenderId).Select(x => x.Value).FirstOrDefault();
+            var receiveClient = ChatHub.OnlineClients.Where(x => x.Key == msg.ReceiveId).Select(x => x.Value).FirstOrDefault();
+            if (senderClient != null)
             {
-                return Ok(new { code =401, message = "用户未登陆！" });
+                await AddGroup(senderClient.ConnectionId,msg.SenderId);//【接收人】加入【发送人】
+                await AddGroup(senderClient.ConnectionId, msg.ReceiveId);//【发送人】加入【接收人】
             }
-            await _hub.Clients.User(userId).SendAsync("ReceiveUserMessage", message);
+            if (receiveClient != null)
+            {
+                await AddGroup(receiveClient.ConnectionId, msg.SenderId);//【接收人】加入【发送人】
+                await AddGroup(receiveClient.ConnectionId, msg.ReceiveId);//【发送人】加入【接收人】
+            }
+            // await _hub.Clients.User(receiveId).SendAsync("ReceiveMessage",msg);
+            await _hub.Clients.Group(msg.SenderId).SendAsync("ReceiveMessage", msg);
 
             return Ok("推送当前登录用户");
+        }
+        private async Task AddGroup(string connectionId, string groupName)
+        {
+            await _hub.Groups.AddToGroupAsync(connectionId, groupName);
         }
         /// <summary>
         /// 通知本组成员
@@ -124,5 +123,14 @@ namespace QICore.NSignalR.Controllers
             _hub.Clients.Group(usernmae).SendAsync("hello", "本组成员好");
             return Content("执行完成");
         }
+    }
+    public class Message
+    {
+        public string SenderId { get; set; }
+        public string SenderName { get; set; }
+        public string ReceiveId { get; set; }
+        public string ReceiveName { get; set; }
+        public string Msg { get; set; }
+        public int MsgType { get; set; }
     }
 }

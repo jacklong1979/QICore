@@ -24,14 +24,15 @@
 
                     </div>
                     <div class="panel-footer">
-                        <input type="text" id="userId" placeholder="用户Id" /><br />
-                        <input type="text" id="userName" placeholder="用户名" /><br />
+                        用户Id: <input type="text" id="userId" placeholder="用户Id" /><br />
+                        用户名:<input type="text" id="userName" placeholder="用户名" /><br />
                         <button class="btn btn-info navbar-btn" type="button" id="joinGroup">初始化用户</button><br />
-                        <input type="text" id="message" name="message" value="" placeholder="在此输入需要发送的消息" /><br />
-                        <input type="text" id="receiveId" placeholder="接收用户名Id" /><br />
+                        消息:<input type="text" id="message" name="message" value="" placeholder="在此输入需要发送的消息" /><br />
+                        接收用户名Id:<input type="text" id="receiveId" placeholder="接收用户名Id" /><br />
                         <button class="btn btn-info navbar-btn" type="button" id="sendGroupBtn">发送组信息</button>
                         <button class="btn btn-info navbar-btn" type="button" id="sendBtn">发送通知（所有人接收）</button>
-
+                        文件：<input type="file" id="txtFile"><br />
+                        <button class="btn btn-info navbar-btn" type="button" id="sendfile">发送文件</button>
                     </div>
                 </div>
             </div>
@@ -44,7 +45,7 @@
     <script src="lib/signalr/signalr.js"></script>
     <script type="text/javascript">
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://127.0.0.1:60647/api/hub", {
+            .withUrl("http://127.0.0.1:60647/api/chathub?userId=A001&userName=中国人", {
                 skipnegotiation: true,
                 transport: signalR.HttpTransportType.WebSockets
             })
@@ -57,6 +58,8 @@
             //SignalR JavaScript 客户端不会自动重新连接，必须编写代码将手动重新连接你的客户端
             setTimeout(() => start(), 5000);
         });
+
+
         //定义方法使用connection.on方法来接收返回数据
         connection.on("ReceiveAllMessage", (user, message) => {
             const encodedMsg = user + " 说：" + message;
@@ -77,7 +80,7 @@
         //定义方法使用connection.on方法来接收返回数据 发送组信息
         connection.on("receiveMessage", (msg) => {
             debugger;
-            const encodedMsg = msg.senderName + " 说：" + msg.message;
+            const encodedMsg = msg.senderName + " 说：" + msg.msg;
             const li = document.createElement("li");
             li.textContent = encodedMsg;
             document.getElementById("messagesList").appendChild(li);
@@ -96,6 +99,43 @@
             var message = document.getElementById('message').value;          
             //从客户端中调用在此调用之前在自定义Hub定义的SendUser方法  SendUser(string senderId,string receiveId, string message)
             connection.invoke("SendUser", senderId, receiveId, message).catch(err => console.error(err.toString()));
+        });
+        //发送文件
+        document.getElementById("sendfile").addEventListener("click", function () {
+
+            var senderId = document.getElementById('userId').value;
+            var senderName = document.getElementById('userName').value;
+            var receiveId = document.getElementById('receiveId').value;
+            var message = document.getElementById('message').value;
+            var formData = new FormData();
+            formData.append("file", $('#txtFile')[0].files[0]);
+            formData.append("senderId", senderId);
+            formData.append("senderName", senderName);
+            formData.append("receiveId", receiveId);
+            formData.append("msg", message);
+            formData.append("msgType", 1);
+            debugger;
+            $.ajax({
+                url: 'http://127.0.0.1:60647/api/chat/senduser',
+                dataType: 'json',
+                type: 'POST',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data.status == 'ok') {
+                        alert('上传成功！');
+                    }
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+            //从客户端中调用在此调用之前在自定义Hub定义的SendUser方法  SendUser(string senderId,string receiveId, string message)
+           // connection.invoke("SendFile", senderId, receiveId, message).catch(err => console.error(err.toString()));
         });
         async function start() {
             try {
