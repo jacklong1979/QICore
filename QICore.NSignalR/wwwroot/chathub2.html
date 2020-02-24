@@ -25,13 +25,14 @@
                     </div>
                     <div class="panel-footer">
                         用户Id: <input type="text" id="userId" placeholder="用户Id" value="B001" /><br />
-                        用户名:<input type="text" id="userName" placeholder="用户名" value="张学友" /><br />                       
-                        消息:<input type="text" id="message" name="message" value="" placeholder="在此输入需要发送的消息" /><br />
+                        用户名:<input type="text" id="userName" placeholder="用户名" value="张学友" /><br />
                         接收用户名Id:<input type="text" id="receiveId" placeholder="接收用户名Id" value="A001" /><br />
-                        <button class="btn btn-info navbar-btn" type="button" id="sendGroupBtn">发送组信息</button>
-                        <button class="btn btn-info navbar-btn" type="button" id="sendBtn">发送通知（所有人接收）</button>
+                        消息:<input type="text" id="message" name="message" value="我是张学友" placeholder="在此输入需要发送的消息" /><br />
+
+                        <!--<button class="btn btn-info navbar-btn" type="button" id="sendGroupBtn">发送组信息</button>
+    <button class="btn btn-info navbar-btn" type="button" id="sendBtn">发送通知（所有人接收）</button>-->
                         文件：<input type="file" id="txtFile"><br />
-                        <button class="btn btn-info navbar-btn" type="button" id="sendfile">发送文件</button>
+                        <button class="btn btn-info navbar-btn" type="button" id="sendfile">发送信息</button>
                     </div>
                 </div>
             </div>
@@ -66,13 +67,13 @@
             li.textContent = encodedMsg;
             document.getElementById("messagesList").appendChild(li);
         });
-        //发送所有人
-        document.getElementById("sendBtn").addEventListener("click", function () {
-            var user = document.getElementById('userName').value;
-            var message = document.getElementById('message').value;
-            //从客户端中调用在此调用之前在自定义Hub定义的SendMessage方法
-            connection.invoke("SendAll", user, message).catch(err => console.error(err.toString()));
-        });
+        ////发送所有人
+        //document.getElementById("sendBtn").addEventListener("click", function () {
+        //    var user = document.getElementById('userName').value;
+        //    var message = document.getElementById('message').value;
+        //    //从客户端中调用在此调用之前在自定义Hub定义的SendMessage方法
+        //    connection.invoke("SendAll", user, message).catch(err => console.error(err.toString()));
+        //});
 
 
 
@@ -85,15 +86,15 @@
             document.getElementById("messagesList").appendChild(li);
         });
        
-        //发送组信息
-        document.getElementById("sendGroupBtn").addEventListener("click", function () {
+        ////发送组信息
+        //document.getElementById("sendGroupBtn").addEventListener("click", function () {
 
-            var senderId = document.getElementById('userId').value;
-            var receiveId = document.getElementById('receiveId').value;
-            var message = document.getElementById('message').value;          
-            //从客户端中调用在此调用之前在自定义Hub定义的SendUser方法  SendUser(string senderId,string receiveId, string message)
-            connection.invoke("SendUser", senderId, receiveId, message).catch(err => console.error(err.toString()));
-        });
+        //    var senderId = document.getElementById('userId').value;
+        //    var receiveId = document.getElementById('receiveId').value;
+        //    var message = document.getElementById('message').value;          
+        //    //从客户端中调用在此调用之前在自定义Hub定义的SendUser方法  SendUser(string senderId,string receiveId, string message)
+        //    connection.invoke("SendUser", senderId, receiveId, message).catch(err => console.error(err.toString()));
+        //});
         //发送文件
         document.getElementById("sendfile").addEventListener("click", function () {
 
