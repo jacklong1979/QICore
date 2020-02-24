@@ -60,12 +60,15 @@ namespace QICore.NSignalR.Common
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             await base.OnDisconnectedAsync(exception);
-            bool isRemoved;
+            bool isRemoved=false;
             OnlineClient client;
             client = OnlineClients.Where(x => x.Value.ConnectionId == Context.ConnectionId).Select(x => x.Value).FirstOrDefault();
             lock (SyncObj)
             {
-                isRemoved = OnlineClients.TryRemove(Context.ConnectionId, out client);
+                if (client != null)
+                {
+                    isRemoved = OnlineClients.TryRemove(client.UserId, out client);
+                }
             }
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, client.UserId);
 

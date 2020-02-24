@@ -112,17 +112,7 @@ namespace QICore.NSignalR.Controllers
         private async Task AddGroup(string connectionId, string groupName)
         {
             await _hub.Groups.AddToGroupAsync(connectionId, groupName);
-        }
-        /// <summary>
-        /// 通知本组成员
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult Two(string usernmae)
-        {    
-            //如果分组成员不存在，不会报错
-            _hub.Clients.Group(usernmae).SendAsync("hello", "本组成员好");
-            return Content("执行完成");
-        }
+        }        
     }
     public class Message
     {
